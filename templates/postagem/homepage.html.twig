@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="jumbotron-img jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Blog</h1>
+            <p class="lead">blog exemplo com sinfony</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+                <button class="btn btn-question">Ultimos Posts</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
+                    <div class="q-container p-4">
+                        <div class="row">
+                            <div class="col-2 text-center">
+                            </div>
+                            <div class="col">
+                                <a class="q-title" href="{{ path('blog_postagem', { slug: 'reversing-a-spell' }) }}"><h2>Titulo do post</h2></a>
+                                <div class="q-display p-3">
+                                    <i class="fa fa-quote-left mr-3"></i>
+                                    <p class="d-inline">Descrição maluco aaaaaaaaaaaaaaaaaaaaaaaaaaaaa.</p>
+                                    <p class="pt-4"><strong>--Autor</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="answer-link" href="#" style="color: #fff;">
+                        <p class="q-display-response text-center p-3">
+                            <i class="fa fa-magic magic-wand"></i> 6 answers
+                        </p>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
