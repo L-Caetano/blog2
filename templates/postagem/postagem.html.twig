@@ -1,9 +1,8 @@
 {%  extends 'base.html.twig' %}
-{% block title %}{{ postagem.titulo }} {% endblock %}
+{% block title %} {{ postagem.titulo }} {% endblock %}
 {% block body %}
 <div style="padding-left: 100px">
     <h1>{{ postagem.titulo }}</h1>
-    Texto no futuro
+    {{ postagem.descricao }}
 </div>
-
 {%  endblock %}

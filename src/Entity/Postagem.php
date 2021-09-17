@@ -23,11 +23,6 @@ class Postagem
     private $titulo;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $yes;
-
-    /**
      * @ORM\Column(type="string", length=800)
      */
     private $descricao;
@@ -36,6 +31,11 @@ class Postagem
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $imagem;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $autor;
 
     public function getId(): ?int
     {
@@ -50,18 +50,6 @@ class Postagem
     public function setTitulo(string $titulo): self
     {
         $this->titulo = $titulo;
-
-        return $this;
-    }
-
-    public function getYes(): ?string
-    {
-        return $this->yes;
-    }
-
-    public function setYes(?string $yes): self
-    {
-        $this->yes = $yes;
 
         return $this;
     }
@@ -86,6 +74,18 @@ class Postagem
     public function setImagem(?string $imagem): self
     {
         $this->imagem = $imagem;
+
+        return $this;
+    }
+
+    public function getAutor(): ?string
+    {
+        return $this->autor;
+    }
+
+    public function setAutor(string $autor): self
+    {
+        $this->autor = $autor;
 
         return $this;
     }

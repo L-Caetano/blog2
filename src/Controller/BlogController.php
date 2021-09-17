@@ -14,18 +14,11 @@ class BlogController extends AbstractController
      */
     public function homepage()
     {
-        return $this->render('postagem/homepage.html.twig');
-    }
-    /**
-     * @Route("/postagem/{slug}", name="blog_postagem")
-     */
-    public function postagem($slug)
-    {
-      $rep = $this->getDoctrine()->getRepository(Postagem::class);
-      $postagem = $rep->find($slug);
-       return $this->render('postagem/postagem.html.twig', [
-                'postagem' => $postagem
+        $rep = $this->getDoctrine()->getRepository(Postagem::class);
+        $postagem = $rep->findBy(array(),array('id' => 'DESC'),3);
+        //dd($postagem);
+        return $this->render('postagem/homepage.html.twig',[
+            'postagens' => $postagem
         ]);
     }
-
 }
