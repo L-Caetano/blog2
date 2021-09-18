@@ -7,13 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 /**
- * @Route("/postagem", name="blog_postagem")
+ * @Route("/postagem", name="blog_postagem.")
  */
 class PostagemController extends AbstractController
 {
 
     /**
-     * @Route("/{slug}", name="index")
+     * @Route("/id/{slug}", name="index")
      */
     public function postagemView($slug)
     {
@@ -25,20 +25,26 @@ class PostagemController extends AbstractController
         ]);
     }
     /**
-     * @Route("/postagem/create", name="blog_create")
+     * @Route("/create", name="create")
      */
     public function create(Request $request){
         $postagem = new Postagem();
         $postagem->setTitulo('Teste');
         $postagem->setDescricao('Teste2');
         $postagem->setImagem('Teste3');
-
+        $postagem->setAutor('Caetano');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($postagem);
+        $em->flush();
     }
+    /**
+     * @Route("/list", name="list")
+     */
     public function postagemList(){
         $rep = $this->getDoctrine()->getRepository(Postagem::class);
         $postagem = $rep->findAll();
         return $this->render('postagem/postagemList.html.twig',[
-            'postagem' => $postagem
+            'postagens' => $postagem
         ]);
     }
 

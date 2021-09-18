@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+                <button class="btn btn-question">Ultimos Posts</button>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for postagem in postagens %}
+                <div class="col-12">
+                    <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
+                        <div class="q-container p-4">
+
+                            <div class="row">
+                                <div class="col-2 text-center">
+                                </div>
+                                <div class="col">
+                                    <a class="q-title" href="{{ path('blog_postagem.index', { slug: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
+                                    <div class="q-display p-3">
+                                        <i class="fa fa-quote-left mr-3"></i>
+                                        <p class="d-inline">{{ postagem.descricao }}</p>
+                                        <p class="pt-4"><strong>--{{ postagem.autor }}</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="answer-link" href="#" style="color: #fff;">
+                            <p class="q-display-response text-center p-3">
+                                <i class="fa fa-magic magic-wand"></i> 6 answers
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
