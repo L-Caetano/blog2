@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
+    {% for message in app.flashes('sucesso') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
     <div class="container">
         <div class="row mb-3">
             <div class="col">
@@ -17,11 +23,13 @@
                                 <div class="col-2 text-center">
                                 </div>
                                 <div class="col">
-                                    <a class="q-title" href="{{ path('blog_postagem.index', { slug: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
+                                    <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
+                                    <a class="text-danger" href="{{ path('blog_postagem.delete', {id: postagem.id}) }}"> Deletar Postagem</a>
                                     <div class="q-display p-3">
                                         <i class="fa fa-quote-left mr-3"></i>
                                         <p class="d-inline">{{ postagem.descricao }}</p>
                                         <p class="pt-4"><strong>--{{ postagem.autor }}</strong></p>
+
                                     </div>
                                 </div>
                             </div>

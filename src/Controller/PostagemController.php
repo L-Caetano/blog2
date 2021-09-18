@@ -6,6 +6,8 @@ use App\Entity\Postagem;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * @Route("/postagem", name="blog_postagem.")
  */
@@ -13,12 +15,12 @@ class PostagemController extends AbstractController
 {
 
     /**
-     * @Route("/id/{slug}", name="index")
+     * @Route("/view/{id}", name="index")
      */
-    public function postagemView($slug)
+    public function postagemView($id)
     {
         $rep = $this->getDoctrine()->getRepository(Postagem::class);
-        $postagem = $rep->findBy(array('id' => $slug));
+        $postagem = $rep->findBy(array('id' => $id));
         //dd($postagem);
         return $this->render('postagem/postagem.html.twig',[
             'postagem' => $postagem[0]
@@ -29,13 +31,14 @@ class PostagemController extends AbstractController
      */
     public function create(Request $request){
         $postagem = new Postagem();
-        $postagem->setTitulo('Teste');
-        $postagem->setDescricao('Teste2');
-        $postagem->setImagem('Teste3');
+        $postagem->setTitulo('Testeaaaaaaaa');
+        $postagem->setDescricao('Teste2aaaa');
+        $postagem->setImagem('Teste3aaaaa');
         $postagem->setAutor('Caetano');
         $em = $this->getDoctrine()->getManager();
         $em->persist($postagem);
         $em->flush();
+        return $this->redirect($this->generateUrl('blog_postagem.list'));
     }
     /**
      * @Route("/list", name="list")
@@ -47,5 +50,20 @@ class PostagemController extends AbstractController
             'postagens' => $postagem
         ]);
     }
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function removePost($id){
+
+        $en = $this->getDoctrine()->getManager();
+        $rep = $this->getDoctrine()->getRepository(Postagem::class);
+        $postagem = $rep->findBy(array('id' => $id));
+        $en->remove($postagem[0]);
+        $en->flush();
+
+        $this->addFlash('sucesso', 'Postagem deletada');
+        return $this->redirect($this->generateUrl('blog_postagem.list'));
+    }
+
 
 }
