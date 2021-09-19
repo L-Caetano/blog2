@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Postagem;
+use App\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,14 +32,20 @@ class PostagemController extends AbstractController
      */
     public function create(Request $request){
         $postagem = new Postagem();
-        $postagem->setTitulo('Testeaaaaaaaa');
-        $postagem->setDescricao('Teste2aaaa');
-        $postagem->setImagem('Teste3aaaaa');
-        $postagem->setAutor('Caetano');
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($postagem);
-        $em->flush();
-        return $this->redirect($this->generateUrl('blog_postagem.list'));
+
+        $form = $this->createForm(PostType::class, $postagem);
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+           //dd($postagem);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($postagem);
+            $em->flush();
+            $this->addFlash('sucesso', 'Postagem Criada');
+            return $this->redirect($this->generateUrl('blog_postagem.list'));
+        }
+        return $this->render('postagem/create.html.twig',[
+            'form' => $form->createView()
+        ]);
     }
     /**
      * @Route("/list", name="list")
