@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Postagem;
 use App\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +39,17 @@ class PostagemController extends AbstractController
         if($form->isSubmitted()){
            //dd($postagem);
             $em = $this->getDoctrine()->getManager();
+            //dd($request->files->get('postagem'));
+            /** @var UploadedFile $file */
+            $file = $request->files->get('post')['imagem'];
+            if($file){
+                $filename = md5(uniqid()).'.'.$file->guessClientExtension();
+                $file->move(
+                    $this->getParameter('uploads_dir'),
+                        $filename
+                );
+                $postagem->setImagem($filename);
+            }
             $em->persist($postagem);
             $em->flush();
             $this->addFlash('sucesso', 'Postagem Criada');

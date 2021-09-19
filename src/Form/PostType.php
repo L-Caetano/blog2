@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Postagem;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,7 @@ class PostType extends AbstractType
         $builder
             ->add('titulo')
             ->add('descricao')
-            ->add('imagem')
+            ->add('imagem',FileType::class)
             ->add('autor')
             ->add('Submit', SubmitType::class,[
 

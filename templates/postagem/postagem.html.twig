@@ -3,6 +3,8 @@
 {% block body %}
 <div style="padding-left: 100px">
     <h1>{{ postagem.titulo }}</h1>
+    <img src="{{ '/uploads/' ~ postagem.imagem }}">
+    <br>
     {{ postagem.descricao }}
 </div>
 {%  endblock %}
