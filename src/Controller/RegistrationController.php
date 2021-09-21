@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Cassandra\Type\UserType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -47,5 +49,28 @@ class RegistrationController extends AbstractController
         return $this->render('registration/index.html.twig', [
                 'form' => $form->createView()
         ]);
+    }
+    /**
+     * @Route("/dashboard", name="dashboard")
+     */
+    public function dashboard(){
+        $en = $this->getDoctrine()->getManager();
+        $users = $en->getRepository(User::class)->findAll();
+        return $this->render('security/dashboard.html.twig', [
+            'users' => $users
+        ]);
+    }
+    /**
+     * @Route("/edituser/{id}", name="user.edit")
+     * @ParamConverter("user", class="Entity\User")
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editUserAction(User $user) {
+        $form = $this->createForm(User::class, $user);
+       return $this->render('security/editUser.html.twig', [
+           'user' => $user,
+           'form' => $form->createView()
+       ]);
     }
 }
