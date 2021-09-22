@@ -21,6 +21,7 @@
 
                             <div class="row">
                                 <div class="col-2 text-center">
+                                    <img src="{{ '/uploads/' ~ postagem.imagem }}" width="170" height="200">
                                 </div>
                                 <div class="col">
                                     <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>

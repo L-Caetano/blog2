@@ -7,6 +7,7 @@ use App\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -49,9 +50,9 @@ class PostagemController extends AbstractController
                         $filename
                 );
                 $postagem->setImagem($filename);
-                $user = new User();
-                //dd($this->get('security.context')->getToken()->getUser()->getId());
-                $postagem->setAutor($user->getUserIdentifier());
+
+                $session = new Session();
+                $postagem->setAutor($session->get('_security.last_username'));
             }
             $em->persist($postagem);
             $em->flush();
