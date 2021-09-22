@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+<center>
     <div class="panel">
         <div class="panel-heading">
-            {{ user.username }}
+           <br>
+            <h1>User: {{ user.username }} </h1>
         </div>
         <div class="panel-body">
             {{ form(form) }}
         </div>
-    </div>
+    </div></center>
 {% endblock %}

@@ -1,3 +1,6 @@
+#edituser:
+ # path: /edituser/{id}
+  #defaults: { _controller: /Controller/RegistrationController::editUserAction }
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index

@@ -17,7 +17,6 @@ class PostType extends AbstractType
             ->add('titulo')
             ->add('descricao')
             ->add('imagem',FileType::class)
-            ->add('autor')
             ->add('Submit', SubmitType::class,[
 
             ])

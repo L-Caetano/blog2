@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Postagem;
 use App\Entity\User;
-use Cassandra\Type\UserType;
+use App\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,17 +61,29 @@ class RegistrationController extends AbstractController
             'users' => $users
         ]);
     }
+
     /**
      * @Route("/edituser/{id}", name="user.edit")
-     * @ParamConverter("user", class="Entity\User")
-     * @param User $user
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editUserAction(User $user) {
-        $form = $this->createForm(User::class, $user);
-       return $this->render('security/editUser.html.twig', [
-           'user' => $user,
-           'form' => $form->createView()
-       ]);
+    public function editUserAction(Request $request,User $user) {
+        $em = $this->getDoctrine()->getManager();
+        //$rep = $this->getDoctrine()->getRepository(User::class);
+        //$user = $rep->findBy(array('id' => $id_user));
+        //dd($user);
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            //$this->addFlash('success', 'section.backoffice.users.edit_roles.confirmation');
+           // dd($user);
+            $em->persist($user);
+            $em->flush();
+            return $this->redirect($this->generateUrl('dashboard'));
+        }
+        return $this->render('security/editUser.html.twig', [
+            'user' => $user,
+            'form' => $form->createView()
+
+        ]);
     }
 }

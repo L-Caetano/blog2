@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <br>
+    <div class="col-12">
+        <h1>Dashboard Usuario </h1>
     <ul class="list-group">
         {% for user in users %}
             <li class="list-group-item">
@@ -9,6 +12,6 @@
                 </a>
             </li>
         {% endfor %}
-
     </ul>
+    </div>
 {% endblock %}

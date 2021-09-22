@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use App\Entity\Postagem;
 use App\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,6 +49,9 @@ class PostagemController extends AbstractController
                         $filename
                 );
                 $postagem->setImagem($filename);
+                $user = new User();
+                //dd($this->get('security.context')->getToken()->getUser()->getId());
+                $postagem->setAutor($user->getUserIdentifier());
             }
             $em->persist($postagem);
             $em->flush();

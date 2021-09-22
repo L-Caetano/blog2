@@ -20,6 +20,10 @@
         <i style="color: #444; font-size: 2rem;" class=" fad fa-cauldron"></i>
         <p class=" d-inline font-weight-bold" style="color: #444;">Postagens</p>
     </a>
+    <a class="navbar-link" href="{{ path('blog_postagem.create') }}">
+        <i style="color: #444; font-size: 2rem;" class=" fad fa-cauldron"></i>
+        <p class=" d-inline font-weight-bold" style="color: #444;">Novo post</p>
+    </a>
     {% if app.user %}
         <a href="{{ path('app_logout') }}" class="btn btn-dark ml-auto" style="color: white;">Logout</a>
       {% else %}
