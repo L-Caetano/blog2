@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Postagem;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,6 +19,9 @@ class PostType extends AbstractType
             ->add('titulo')
             ->add('descricao')
             ->add('imagem',FileType::class)
+            ->add('category', EntityType::class, [
+                'class' => Category::class
+            ])
             ->add('Submit', SubmitType::class,[
 
             ])
