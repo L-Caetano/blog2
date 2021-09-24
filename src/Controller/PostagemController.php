@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Category;
 use App\Entity\User;
 use App\Entity\Postagem;
 use App\Form\PostType;
@@ -87,6 +88,18 @@ class PostagemController extends AbstractController
         $this->addFlash('sucesso', 'Postagem deletada');
         return $this->redirect($this->generateUrl('blog_postagem.list'));
     }
-
+    /**
+     * @Route("/category/{id}", name="category")
+     */
+    public function filterByChategory($id){
+        $rep = $this->getDoctrine()->getRepository(Postagem::class);
+        $postagem = $rep->findBy(array('category' => $id));
+        //$cat = new Category();
+        //$postagem = $cat->getPostagem($id);
+        //dd($postagem);
+        return $this->render('postagem/postagemList.html.twig',[
+            'postagens' => $postagem
+        ]);
+    }
 
 }
