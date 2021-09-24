@@ -86,4 +86,18 @@ class RegistrationController extends AbstractController
 
         ]);
     }
+    /**
+     * @Route("/deleteUser/{id}", name="deleteUser")
+     */
+    public function removeUser($id){
+        $en = $this->getDoctrine()->getManager();
+        $rep = $this->getDoctrine()->getRepository(User::class);
+        $user = $rep->findBy(array('id' => $id));
+        //dd($user[0]);
+        $en->remove($user[0]);
+        $en->flush();
+
+        $this->addFlash('sucesso', 'User deletado');
+        return $this->redirect($this->generateUrl('dashboard'));
+    }
 }

@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% for message in app.flashes('sucesso') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
     <br>
     <div class="col-12">
         <h1>Dashboard Usuario </h1>
@@ -9,7 +14,7 @@
             <li class="list-group-item">
                 <a href="{{ path('user.edit', {id: user.id}) }}">
                     {{ user.username }}
-                </a>
+                </a><a style="float: right" class="btn btn-danger" href="{{ path('deleteUser', {id: user.id}) }}"> Deletar User</a>
             </li>
         {% endfor %}
     </ul>
