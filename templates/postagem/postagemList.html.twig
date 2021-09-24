@@ -6,6 +6,15 @@
         {{ message }}
     </div>
 {% endfor %}
+    <br>
+    <div class="container">
+    <div class="row mb-3">
+        <h5>Procurar por categoria: </h5>
+    {% for categoria in category %}
+      <h5><a style="padding-left: 10px" href="{{ path('blog_postagem.category', { id: categoria.id }) }}">{{ categoria.name }}</a> </h5>
+    {% endfor %}
+    </div></div>
+    <hr>
     <div class="container">
         <div class="row mb-3">
             <div class="col">
