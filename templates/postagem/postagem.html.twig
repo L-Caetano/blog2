@@ -5,9 +5,12 @@
     <h1>{{ postagem.titulo }}</h1>
     <img src="{{ '/uploads/' ~ postagem.imagem }}">
     <br>
+    <a href="{{ '/uploads/' ~ postagem.imagem }}" download="{{ 'imagem-do-post-' ~ postagem.titulo }}">Baixar imagem</a>
+    <br>
     <hr>
     {{ postagem.descricao }}
     <br><hr>
+    <br>
     <em>Categoria: {{ postagem.category }}</em>
 </div>
 {%  endblock %}

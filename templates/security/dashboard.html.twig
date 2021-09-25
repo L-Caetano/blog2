@@ -8,7 +8,7 @@
     {% endfor %}
     <br>
     <div class="col-12">
-        <h1>Dashboard Usuario </h1>
+        <h1>Dashboard Usuario <a style="float: right" class="btn btn-primary" href="{{ path('register')}}"> Novo User</a></h1>
     <ul class="list-group">
         {% for user in users %}
             <li class="list-group-item">

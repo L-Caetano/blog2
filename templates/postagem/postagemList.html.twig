@@ -24,13 +24,14 @@
 
         <div class="row">
             {% for postagem in postagens %}
+
                 <div class="col-12">
                     <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
                         <div class="q-container p-4">
 
                             <div class="row">
                                 <div class="col-2 text-center">
-                                    <img src="{{ '/uploads/' ~ postagem.imagem }}" width="170" height="200">
+                                    <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"> <img src="{{ '/uploads/' ~ postagem.imagem }}" width="170" height="200"></a>
                                 </div>
                                 <div class="col">
                                     <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
@@ -46,12 +47,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <a class="answer-link" href="#" style="color: #fff;">
-                            <p class="q-display-response text-center p-3">
-                                <i class="fa fa-magic magic-wand"></i> 6 answers
-                            </p>
-                        </a>
                     </div>
                 </div>
             {% endfor %}
