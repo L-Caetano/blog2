@@ -39,6 +39,6 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/postagem, roles: ROLE_USER }
         - { path: ^/dashboard, roles: ROLE_ADMIN }
-        - { path: ^/edituser, roles: ROLE_ADMIN }
+        - { path: ^/edituser, roles: ROLE_USER }
         - { path: ^/delete, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
