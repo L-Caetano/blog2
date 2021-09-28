@@ -37,8 +37,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/postagem/create, roles: ROLE_ADMIN }
         - { path: ^/postagem, roles: ROLE_USER }
         - { path: ^/dashboard, roles: ROLE_ADMIN }
-        - { path: ^/edituser, roles: ROLE_USER }
+        - { path: ^/edituser, roles: ROLE_ADMIN }
         - { path: ^/delete, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
