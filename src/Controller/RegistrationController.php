@@ -2,16 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\Postagem;
+use App\Entity\Category;
 use App\Entity\User;
+use App\Form\CategoryType;
+use App\Form\PostType;
 use App\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -105,5 +109,25 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('sucesso', 'User deletado');
         return $this->redirect($this->generateUrl('dashboard'));
+    }
+    /**
+     * @Route("/createCat", name="createCategory")
+     */
+    public function createCat(Request $request){
+        $categoria = new Category();
+
+        $form = $this->createForm(CategoryType::class, $categoria);
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            //dd($postagem);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($categoria);
+            $em->flush();
+            $this->addFlash('sucesso', 'Category Criada');
+            return $this->redirect($this->generateUrl('blog_postagem.list'));
+        }
+        return $this->render('postagem/create.html.twig',[
+            'form' => $form->createView()
+        ]);
     }
 }
