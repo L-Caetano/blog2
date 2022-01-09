@@ -7,19 +7,20 @@
     </div>
 {% endfor %}
     <br>
+    
     <div class="container">
     <div class="row mb-3">
         <h5>Procurar por categoria: </h5>
-        <h5><a style="padding-left: 10px" href="{{ path('blog_postagem.list')}}">Todos os posts </a> </h5>
+        <h5><a style="padding-left: 10px; text-decoration: none; color: black" href="{{ path('blog_postagem.list')}}">-Todos os albuns </a> </h5>
     {% for categoria in category %}
-      <h5><a style="padding-left: 10px" href="{{ path('blog_postagem.category', { id: categoria.id }) }}">{{ categoria.name }}</a> </h5>
+      <h5><a style="padding-left: 10px; text-decoration: none; color: black" href="{{ path('blog_postagem.category', { id: categoria.id }) }}">-{{ categoria.name }}</a> </h5>
     {% endfor %}
     </div></div>
     <hr>
     <div class="container">
         <div class="row mb-3">
             <div class="col">
-                <button class="btn btn-question">Ultimos Posts</button>
+                <button class="btn btn-question">Ultimos Albuns</button>
             </div>
         </div>
 
@@ -32,16 +33,16 @@
 
                             <div class="row">
                                 <div class="col-5 text-center">
-                                    <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}">
-                                  
+                                    <a class="q-title"  style="text-decoration: none; color: black" href="{{ path('blog_postagem.index', { id: postagem.id }) }}">
+                                   <div class="container">
                                     <div class="card-2">
                                      <img src="{{ '/uploads/' ~ postagem.imagem }}" width="200" height="200">
-                                  
+                                  </div>
                                      </div>
                                      </a>
                                 </div>
                                 <div class="col">
-                                    <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
+                                    <a class="q-title"  style="text-decoration: none; color: black" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <a class="text-danger" href="{{ path('blog_postagem.delete', {id: postagem.id}) }}"> Deletar Postagem</a>
                                     {% endif %}
