@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PostagemRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,16 @@ class Postagem
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="postagem")
      */
     private $category;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Imagem::class, mappedBy="IdAlbum")
+     */
+    private $Imagens;
+
+    public function __construct()
+    {
+        $this->Imagens = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +115,33 @@ class Postagem
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Imagem[]
+     */
+    public function getImagens(): Collection
+    {
+        return $this->Imagens;
+    }
+
+    public function addImagen(Imagem $imagen): self
+    {
+        if (!$this->Imagens->contains($imagen)) {
+            $this->Imagens[] = $imagen;
+            $imagen->addIdAlbum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImagen(Imagem $imagen): self
+    {
+        if ($this->Imagens->removeElement($imagen)) {
+            $imagen->removeIdAlbum($this);
+        }
 
         return $this;
     }
