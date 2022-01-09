@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Artestilo acervo{% endblock %}</title>
@@ -47,7 +48,15 @@
     {% endif %}
 
 </nav>
-
+<style>
+.card-2 {
+  height: 200px;
+  width: 200px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+ box-shadow: rgba(0, 0, 0, 0.4) -5px 5px, rgba(0, 0, 0, 0.3) -10px 10px, rgba(0, 46, 170, 0.2) -15px 15px, rgba(0, 0, 0, 0.1) -10px 10px, rgba(0, 0, 0, 0.05) -0 0;
+}
+</style>
 {% block body %}
     {% endblock %}
 
