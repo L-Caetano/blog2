@@ -1,6 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<style>
+.card-2 {
+  height: 200px;
+  width: 200px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+ box-shadow: rgba(0, 0, 0, 0.4) -5px 5px, rgba(0, 0, 0, 0.3) -10px 10px, rgba(0, 46, 170, 0.2) -15px 15px, rgba(0, 0, 0, 0.1) -10px 10px, rgba(0, 0, 0, 0.05) -0 0;
+}
+</style>
     {% for message in app.flashes('sucesso') %}
     <div class="alert alert-success">
         {{ message }}
@@ -32,7 +41,13 @@
 
                             <div class="row">
                                 <div class="col-5 text-center">
-                                    <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"> <img src="{{ '/uploads/' ~ postagem.imagem }}" width="170" height="200"></a>
+                                    <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}">
+                                  
+                                    <div class="card-2">
+                                     <img src="{{ '/uploads/' ~ postagem.imagem }}" width="200" height="200">
+                                  
+                                     </div>
+                                     </a>
                                 </div>
                                 <div class="col">
                                     <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
