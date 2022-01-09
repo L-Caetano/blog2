@@ -58,7 +58,7 @@ class PostagemController extends AbstractController
             $this->addFlash('sucesso', 'Postagem Criada');
             return $this->redirect($this->generateUrl('blog_postagem.list'));
         }
-        return $this->render('postagem/create.html.twig',[
+        return $this->render('postagem/create.html.album.twig',[
             'form' => $form->createView()
         ]);
     }

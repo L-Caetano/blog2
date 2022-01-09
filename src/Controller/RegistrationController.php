@@ -126,7 +126,7 @@ class RegistrationController extends AbstractController
             $this->addFlash('sucesso', 'Category Criada');
             return $this->redirect($this->generateUrl('blog_postagem.list'));
         }
-        return $this->render('postagem/create.html.twig',[
+        return $this->render('postagem/create.html.cat.twig',[
             'form' => $form->createView()
         ]);
     }
