@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PostagemController extends AbstractController
 {
-
+    public $cat;
     /**
      * @Route("/view/{id}", name="index")
      */
@@ -97,11 +97,29 @@ class PostagemController extends AbstractController
         $rep = $this->getDoctrine()->getRepository(Postagem::class);
         $postagem = $rep->findBy(array('category' => $id));
         $rep = $this->getDoctrine()->getRepository(Category::class);
-        $cat = $rep->findAll();
+        $this->cat = $rep->findAll();
         return $this->render('postagem/postagemList.html.twig',[
             'postagens' => $postagem,
-            'category' => $cat
+            'category' =>  $this->cat
         ]);
     }
+      /**
+     * @Route("/search/{search}{id}", name="Search")
+     */
+    public function filterBySearch($search){
+        $rep[0] = $this->getDoctrine()->getRepository(Postagem::class)->createQueryBuilder('a')
+   ->where('a.titulo LIKE :title')
+   ->setParameter(':title', '%'.$search.'%')
+   ->getQuery()
+   ->getResult();
 
+        //$rep[0] = $rep[0]->findBy(array('titulo' => $search));
+        if($this->cat == null){
+        $rep[1] = $this->getDoctrine()->getRepository(Category::class);
+        $rep[1] = $rep[1]->findAll();
+        }else{
+            $rep[1] = $this->cat;
+        }
+        return $rep;
+    }
 }
