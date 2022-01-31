@@ -4,8 +4,30 @@
 
     <div class="text-center my-5">
         <h1>Álbuns</h1>
-        
     </div>
-
+    <div class="container">
+        <div class="row">
+            {% for albuns in album %}
+                <div class="m-5">
+                    <div class="col-md-12 ">
+                      <div class="col-5 text-center">
+                            <div class="card-2">
+                                {% for postagens in albuns.postagem|slice(1)  %}
+                                    <img src="{{ '/uploads/' ~ postagens.imagem }}" class="" width="200" height="200">
+                                {% endfor %}    
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-12 pl-4">
+                        <a href="{{ path('album.view', { id: albuns.id }) }}" >
+                            <h2>{{albuns.name}}</h2> 
+                        </a>
+                    </div>
+                </div>
+        
+            {% endfor %}
+        </div>
+     </div>
 
 {% endblock %}

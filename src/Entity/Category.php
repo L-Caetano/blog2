@@ -30,6 +30,11 @@ class Category
     private $postagem;
 
     /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $image;
+    
+    /**
      * @ORM\Column(type="datetime")
      */
     private $creation_date;
@@ -135,5 +140,25 @@ class Category
     public function preUpdate()
     {
         $this->update_date = new \DateTime();
+    }
+
+    /**
+     * Get the value of image
+     */ 
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set the value of image
+     *
+     * @return  self
+     */ 
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }

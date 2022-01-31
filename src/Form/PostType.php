@@ -20,7 +20,8 @@ class PostType extends AbstractType
             ->add('descricao')
             ->add('imagem',FileType::class)
             ->add('category', EntityType::class, [
-                'class' => Category::class
+                'class' => Category::class,
+                'label'=>'Album',
             ])
             ->add('Submit', SubmitType::class,[
 

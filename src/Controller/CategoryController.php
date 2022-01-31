@@ -28,8 +28,19 @@ class CategoryController extends AbstractController{
     public function index(){
         $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
         return $this->render('albuns/index.html.twig', [
-            'albuns' => $categories
+            'album' => $categories,
         ]);
     }
+    
+    /**
+     * @Route("/view/{id}", name="view")
+     */
+    public function viewAlbumAction(Category $category){
+        $em=$this->getDoctrine()->getManager();
+        return $this->render('albuns/view.html.twig', [
+            'album' => $category,
+        ]);
+    }
+
 
 }
