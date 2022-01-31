@@ -45,7 +45,7 @@ class SearchController extends AbstractController
      */
     public function handleSearch(Request $request, PostagemController $postagemController){ 
         $rep = $postagemController->filterBySearch($request->request->get('form')['Pesquisa']);
-        
+        //var_dump($request->query->get('id')); die;
        return $this->render('postagem/postagemList.html.twig',[
         'postagens' => $rep[0],
         'category' => $rep[1]

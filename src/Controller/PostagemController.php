@@ -104,15 +104,17 @@ class PostagemController extends AbstractController
         ]);
     }
       /**
-     * @Route("/search/{search}{id}", name="Search")
+     * @Route("/search/{search}", name="Search")
      */
     public function filterBySearch($search){
         $rep[0] = $this->getDoctrine()->getRepository(Postagem::class)->createQueryBuilder('a')
    ->where('a.titulo LIKE :title')
+  // ->andWhere('a.category_id == :category')
    ->setParameter(':title', '%'.$search.'%')
+   //->setParameter(':category', $id)
    ->getQuery()
    ->getResult();
-
+        //$request->query->get('id');
         //$rep[0] = $rep[0]->findBy(array('titulo' => $search));
         if($this->cat == null){
         $rep[1] = $this->getDoctrine()->getRepository(Category::class);
@@ -120,6 +122,7 @@ class PostagemController extends AbstractController
         }else{
             $rep[1] = $this->cat;
         }
+
         return $rep;
     }
 }

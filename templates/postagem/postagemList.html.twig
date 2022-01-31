@@ -52,7 +52,7 @@
                                 <div class="col">
                                     <a class="q-title"  style="text-decoration: none; color: black" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
                                     {% if is_granted('ROLE_ADMIN') %}
-                                    <a class="text-danger" href="{{ path('blog_postagem.delete', {id: postagem.id}) }}"> Deletar Postagem</a>
+                                    <a class="text-danger" href="{{ path('blog_postagem.delete', {id: postagem.id}) }}"> Deletar album</a>
                                     {% endif %}
                                     <div class="q-display p-3">
                                         <i class="fa fa-quote-left mr-3"></i>
