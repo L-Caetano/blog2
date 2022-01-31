@@ -4,3 +4,6 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+#deleteUser:
+#  path: /deleteUser/{id}
+#  defaults: { _controller: src/Controller/RegistrationController::removeUserAction, id: null }

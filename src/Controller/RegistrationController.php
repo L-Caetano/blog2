@@ -20,7 +20,24 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends AbstractController
-{
+{ 
+    
+    /**
+     * @Route("/deleteUser/{user}", name="deleteUser")
+     */
+    public function removeUserAction(User $user){
+       // dd($user);
+       //dd($user);  
+        $en = $this->getDoctrine()->getManager();
+       // $rep = $this->getDoctrine()->getRepository(User::class);
+        //$user = $rep->find($id);
+        //dd($user[0]);
+        $en->remove($user);
+        $en->flush();
+
+        $this->addFlash('sucesso', 'User deletado com sucesso!!');
+        return $this->redirect($this->generateUrl('dashboard'));
+    }
     /**
      * @Route("/register", name="register")
      */
@@ -64,9 +81,23 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/dashboard", name="dashboard")
      */
-    public function dashboard(){
+    public function dashboard(Request $request){
         $en = $this->getDoctrine()->getManager();
-        $users = $en->getRepository(User::class)->findAll();
+        
+        if($request->isMethod("POST")){
+            $userSearch = $request->get('userSearch');
+            $users = $en->getRepository(User::class)->createQueryBuilder('a')
+   ->where('a.username LIKE :username')
+  // ->andWhere('a.category_id == :category')
+   ->setParameter(':username', '%'.$userSearch.'%')
+   //->setParameter(':category', $id)
+   ->getQuery()
+   ->getResult();
+
+        }else{
+              $users = $en->getRepository(User::class)->findAll();
+        }
+     
         return $this->render('security/dashboard.html.twig', [
             'users' => $users
         ]);
@@ -88,6 +119,7 @@ class RegistrationController extends AbstractController
            // dd($user);
             $em->persist($user);
             $em->flush();
+            $this->addFlash('sucesso', 'User editado com sucesso!');
             return $this->redirect($this->generateUrl('dashboard'));
         }
         return $this->render('security/editUser.html.twig', [
@@ -96,21 +128,7 @@ class RegistrationController extends AbstractController
 
         ]);
     }
-    /**
-     * @Route("/deleteUser/{id}", name="deleteUser")
-     */
-    public function removeUser($id){
-        $en = $this->getDoctrine()->getManager();
-        $rep = $this->getDoctrine()->getRepository(User::class);
-        $user = $rep->findBy(array('id' => $id));
-        //dd($user[0]);
-        $en->remove($user[0]);
-        $en->flush();
-
-        $this->addFlash('sucesso', 'User deletado');
-        return $this->redirect($this->generateUrl('dashboard'));
-    }
-    /**
+      /**
      * @Route("/createCat", name="createCategory")
      */
     public function createCat(Request $request){
@@ -132,4 +150,7 @@ class RegistrationController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+  
+  
+  
 }

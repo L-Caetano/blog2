@@ -68,12 +68,11 @@ class PostagemController extends AbstractController
     public function postagemList(){
         $rep = $this->getDoctrine()->getRepository(Postagem::class);
         $postagem = $rep->findAll();
-        $rep = $this->getDoctrine()->getRepository(Category::class);
-        $cat = $rep->findAll();
+       // $rep = $this->getDoctrine()->getRepository(Category::class);
+      // $cat = $rep->findAll();
         //dd($cat);
         return $this->render('postagem/postagemList.html.twig',[
             'postagens' => $postagem,
-            'category' => $cat
         ]);
     }
     /**
