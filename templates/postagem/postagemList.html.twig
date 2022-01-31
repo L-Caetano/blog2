@@ -13,22 +13,22 @@
         'App\\Controller\\SearchController::searchBar'
     )) }}
     <div class="row mb-3">
-        <h4>Procurar por categoria: </h4>
+        <h4>Imagens </h4>
      <div style="padding-top: 4px;">
-      <h5> <a style="padding-left: 10px;color: black" href="{{ path('blog_postagem.list')}}">• Todos os albuns </a> </h5>
-      </div>
-      
+      {# <h5> <a style="padding-left: 10px;color: black" href="{{ path('blog_postagem.list')}}">• Todos os albuns </a> </h5>
+      </div> #}
+{#       
     {% for categoria in category %}
  <div style="padding-top: 7px;">
      <p><a style="padding-left: 10px;  color: black" href="{{ path('blog_postagem.category', { id: categoria.id }) }}">• {{ categoria.name }}</a></p>
     </div>
-    {% endfor %}
+    {% endfor %} #}
     </div></div>
     <hr>
     <div class="container">
         <div class="row mb-3">
             <div class="col">
-                <button class="btn btn-question">Ultimos Albuns</button>
+                <button class="btn btn-question">Ultimas Imagens</button>
             </div>
         </div>
 

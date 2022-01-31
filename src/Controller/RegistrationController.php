@@ -121,6 +121,8 @@ class RegistrationController extends AbstractController
         if($form->isSubmitted()){
             //dd($postagem);
             $em = $this->getDoctrine()->getManager();
+            $categoria->setCreationDate(new \DateTime());
+            $categoria->setUpdateDate(new \DateTime());
             $em->persist($categoria);
             $em->flush();
             $this->addFlash('sucesso', 'Category Criada');

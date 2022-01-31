@@ -29,6 +29,16 @@ class Category
      */
     private $postagem;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $creation_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $update_date;
+
     public function __construct()
     {
         $this->postagem = new ArrayCollection();
@@ -84,5 +94,46 @@ class Category
     {
         // TODO: Implement __toString() method.
         return $this->name;
+    }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creation_date;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creation_date): self
+    {
+        $this->creation_date = $creation_date;
+
+        return $this;
+    }
+    public function prePersist()
+    {
+        $this->creation_date = new \DateTime();
+    }
+    
+
+    /**
+     * Get the value of update_date
+     */ 
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Set the value of update_date
+     *
+     * @return  self
+     */ 
+    public function setUpdateDate($update_date)
+    {
+        $this->update_date = $update_date;
+
+        return $this;
+    }
+    public function preUpdate()
+    {
+        $this->update_date = new \DateTime();
     }
 }
