@@ -16,11 +16,11 @@
         <div class="row">
             {% for postagem in postagens %}
             <div class="col-6">
-                <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
+                <div id="{{postagem.id}}" style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
                     <div class="q-container p-4">
 
                         <div class="row">
-                            <div class="col-5 text-center">
+                            <div class="col-5 text-center" onclick="getId({{postagem.id}})">
                                    <div class="card-2">
                                 <img src="{{ '/uploads/' ~ postagem.imagem }}" width="200" height="200">
                                 </div>
@@ -44,12 +44,39 @@
                     </a>
                 </div>
             </div>
+           
             {% endfor %}
         </div>
     </div>
+    <p style="padding-right=100px;">
+     <input type="button" id="togglee" class="btn btn-primary" style="visibility: hidden; position: -webkit-sticky; position: sticky; bottom: 0; float: right;" value="togglee" onClick="action();" />
+</p>
 {% endblock %}
 {% block javascripts %}
 <script>
+let ids = [];
+
+function getId(id){
+     if(ids.find(element=> element == id)){
+    console.log("AAAAAAAAAAAAAAAA")
+     document.getElementById(id).style.border = "none";
+     var index = ids.indexOf(id);
+    if (index !== -1) {
+     ids.splice(index, 1);
+} 
+     }else{
+           ids.push(id);
+     document.getElementById(id).style.border = "thick solid #3d3d40"; 
+     document.getElementById(id).style.borderRadius="25px" 
+    console.log(ids)
+     }
+    if(ids.length > 0){
+   document.getElementById('togglee').style.visibility = 'visible';
+}else{
+    document.getElementById('togglee').style.visibility = 'hidden';
+}
+}
+ 
 
 </script>
 {% endblock %}

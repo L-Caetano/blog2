@@ -59,4 +59,18 @@ class CustomAuthenticator extends AbstractLoginFormAuthenticator
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+    
+    public function getUser() 
+    { 
+        if (!$token = $this->TokenStorageInterface->getToken()) { 
+            return null; 
+        } 
+     
+        $user = $token->getUser(); 
+        if (!is_object($user)) { 
+            return null; 
+        } 
+     
+        return $user; 
+    } 
 }
