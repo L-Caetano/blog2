@@ -28,15 +28,19 @@
     <div class="container">
         <div class="row mb-3">
             <div class="col">
-                <button class="btn btn-question">Ultimas Imagens</button>
+                <button class="btn btn-question">Ultimas Imagens</button>   
+                <input id="remember" name="remember" type="checkbox" onclick="validate()" /> Selecionar multiplas imagens
             </div>
+            
         </div>
 
         <div class="row">
+        
+        
             {% for postagem in postagens %}
 
-                <div class="col-6">
-                    <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
+                <div class="col-6" id="{{postagem.id}}">
+                    <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);" onclick="getId({{postagem.id}})">
                         <div class="q-container p-4">
 
                             <div class="row">
@@ -68,4 +72,45 @@
             {% endfor %}
         </div>
     </div>
+  <nav class="navbar fixed-bottom navbar-light bg-light" id="navbarFooterUser" style="visibility: hidden;">
+  <div class="container-fluid">
+    <button type="button" class="btn btn-primary">Adicionar ao meu album</button>
+  </div>
+</nav>
+{% endblock %}
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+let ids = [];
+window.onload = function() {
+validate();
+}
+function validate(){
+    if(document.getElementById('remember').checked){
+     document.getElementById('navbarFooterUser').style.visibility = 'visible';
+    }else{
+         document.getElementById('navbarFooterUser').style.visibility = 'hidden';
+    }
+}
+
+function getId(id){
+    if(document.getElementById('remember').checked){
+         
+    if(ids.find(element=> element == id)){
+     document.getElementById(id).style.border = "none";
+     var index = ids.indexOf(id);
+    if (index !== -1) {
+     ids.splice(index, 1);
+} 
+     }else{
+           ids.push(id);
+     document.getElementById(id).style.border = "thick solid #3d3d40"; 
+     document.getElementById(id).style.borderRadius="25px" 
+    console.log(ids)
+     }
+    }
+   
+}
+ 
+</script>
 {% endblock %}
