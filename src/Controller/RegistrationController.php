@@ -20,6 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
 class RegistrationController extends AbstractController
 { 
     
@@ -85,23 +87,24 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/dashboard", name="dashboard")
      */
-    public function dashboard(Request $request){
+    public function dashboard(Request $request, PaginatorInterface $paginator){
         $en = $this->getDoctrine()->getManager();
-        
         if($request->isMethod("POST")){
             $userSearch = $request->get('userSearch');
-            $users = $en->getRepository(User::class)->createQueryBuilder('a')
+            $AllUsers = $en->getRepository(User::class)->createQueryBuilder('a')
    ->where('a.username LIKE :username')
   // ->andWhere('a.category_id == :category')
    ->setParameter(':username', '%'.$userSearch.'%')
    //->setParameter(':category', $id)
-   ->getQuery()
-   ->getResult();
+   ->getQuery();
 
         }else{
-              $users = $en->getRepository(User::class)->findAll();
+              $AllUsers = $en->getRepository(User::class)->findAll();
         }
-     
+      
+        $users = $paginator->paginate(
+        $AllUsers, $request->query->getInt('page',1),10
+   );
         return $this->render('security/dashboard.html.twig', [
             'users' => $users
         ]);

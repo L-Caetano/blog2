@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-
+use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
@@ -35,4 +35,5 @@ class Kernel extends BaseKernel
             $routes->import('../config/{routes}.php');
         }
     }
+
 }
