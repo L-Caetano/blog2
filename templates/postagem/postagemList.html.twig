@@ -45,7 +45,7 @@
 
                             <div class="row">
                                 <div class="col-5 text-center">
-                                    <a class="q-title"  style="text-decoration: none; color: black" href="{{ path('blog_postagem.index', { id: postagem.id }) }}">
+                                    <a class="q-title"  style="text-decoration: none; color: black" >
                                    <div class="container">
                                     <div class="card-2">
                                      <img src="{{ '/uploads/' ~ postagem.imagem }}" width="200" height="200">
@@ -84,9 +84,33 @@ let ids = [];
 window.onload = function() {
 validate();
 } 
+  function swalSelect(data){
+       var options = {};
+        $.map(data,
+            function(o) {
+                options[o.id] = o.name;
+            });
+      console.log(data)
+ const { value: fruit } =  Swal.fire({
+  title: 'Selecione o album a salvar as imagens',
+  input: 'select',
+  inputOptions: options,
+  inputPlaceholder: 'Selecione um album',
+  showCancelButton: true,
+  inputValidator: (value) => {
+    return new Promise((resolve) => {
+     console.log(value)
+    })
+  }
+})
+
+if (fruit) {
+  Swal.fire(`You selected: ${fruit}`)
+}
+      }
 $(document).ready(function(){   
          $("#loadstudent").click( function(){  
-             console.log("cu");
+             
             $.ajax({  
                url:        '{{ path("album.getAlbums")}}',  
                type:       'GET',   
@@ -97,8 +121,8 @@ $(document).ready(function(){
                   for(i = 0; i < data.length; i++) {  
                      student = data[i];  
                      console.log(data[i])
-                     
                   }  
+                   swalSelect(data)
                },  
                error : function(xhr, textStatus, errorThrown) {  
                   alert('Ajax request failed.');  
@@ -131,7 +155,7 @@ function getId(id){
      }
     }
    
-      
+    
 }
  
 </script>

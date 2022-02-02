@@ -62,5 +62,18 @@ public function getAlbumsAction(Request $request) {
        return new JsonResponse($jsonData); 
     }
  }    
+ /** 
+   * @Route("/album/PostAjax", name="postAlbum") 
+*/ 
+public function postAlbumAction(Request $request) {  
+    $a = $this->getDoctrine()->getManager();
+   // $b = new Imagem();
+    if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {  
+       $jsonData = array();  
+       $idx = 0;  
+       
+       return new JsonResponse($jsonData); 
+    }
+ }
 
 }
