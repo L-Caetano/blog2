@@ -3,11 +3,20 @@
 <center>
     <div class="panel">
         <div class="panel-heading">
-           <br>
-            <h1>Usuario em edição: {{ user.username }} </h1>
+      
+<div class="row" style="padding-top: 10px">
+<div class="col"></div>
+<div class="col">
+        <div  class="shadow p-3 mb-5 bg-white rounded">
+           <br> <h1>Usuario em edição:</h1>
+           
+            <div class="container">
+            <h2>Nome: {{ user.username }} </h2>
         </div>
         <div class="panel-body">
             {{ form(form) }}
+        </div></div></div>
+        <div class="col"></div></div>
         </div>
     </div></center>
 {% endblock %}

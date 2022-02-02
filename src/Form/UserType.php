@@ -16,12 +16,12 @@ class UserType extends AbstractType
         $builder
             ->add(
                 'roles', ChoiceType::class, [
-                    'choices' => ['ROLE_ADMIN' => 'ROLE_ADMIN', 'ROLE_USER' => 'ROLE_USER'],
+                    'choices' => ['Usuario Administrador' => 'ROLE_ADMIN', 'Usuario Normal' => 'ROLE_USER'],
                     'expanded' => true,
                     'multiple' => true,
                 ]
             )
-            ->add('Submit', SubmitType::class,[
+            ->add('Salvar', SubmitType::class,[
 
             ]);
 
