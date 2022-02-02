@@ -74,17 +74,38 @@
     </div>
   <nav class="navbar fixed-bottom navbar-light bg-light" id="navbarFooterUser" style="visibility: hidden;">
   <div class="container-fluid">
-    <button type="button" class="btn btn-primary">Adicionar ao meu album</button>
+    <button id = "loadstudent" type="button" class="btn btn-primary">Adicionar ao meu album</button>
   </div>
 </nav>
 {% endblock %}
 {% block javascripts %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 let ids = [];
 window.onload = function() {
 validate();
-}
+} 
+$(document).ready(function(){   
+         $("#loadstudent").click( function(){  
+             console.log("cu");
+            $.ajax({  
+               url:        '{{ path("album.getAlbums")}}',  
+               type:       'GET',   
+               dataType:   'json',  
+               async:      true,  
+               
+               success: function(data, status) {       
+                  for(i = 0; i < data.length; i++) {  
+                     student = data[i];  
+                     console.log(data[i])
+                     
+                  }  
+               },  
+               error : function(xhr, textStatus, errorThrown) {  
+                  alert('Ajax request failed.');  
+               }  
+            });  
+         });  
+      });
 function validate(){
     if(document.getElementById('remember').checked){
      document.getElementById('navbarFooterUser').style.visibility = 'visible';
@@ -110,6 +131,7 @@ function getId(id){
      }
     }
    
+      
 }
  
 </script>

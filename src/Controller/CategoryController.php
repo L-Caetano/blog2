@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * @Route("/album", name="album.")
  */
@@ -41,6 +41,26 @@ class CategoryController extends AbstractController{
             'album' => $category,
         ]);
     }
-
+/** 
+   * @Route("/album/ajax", name="getAlbums") 
+*/ 
+public function getAlbumsAction(Request $request) {  
+    $a = $this->getDoctrine() 
+       ->getRepository(Category::class) 
+       ->findAll();  
+       
+    if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {  
+       $jsonData = array();  
+       $idx = 0;  
+       foreach($a as $arg) {  
+          $temp = array(
+             'id' => $arg->getId(),  
+             'name' => $arg->getName(),  
+          );   
+          $jsonData[$idx++] = $temp;  
+       } 
+       return new JsonResponse($jsonData); 
+    }
+ }    
 
 }
