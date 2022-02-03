@@ -1,44 +1,35 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="text-center my-5">
-        <h1>{{ album.name }}</h1>
+      <h1 class="display-3">{{ album.name }}</h1>
+      <hr>
     </div>
-    <div class="container">
-        <div class="row">
+
+ <div class="container-fluid">
+                     <div class="row">
+                     {% set cont = 0 %}
             {% for postagem in album.postagem %}
-            <div class="col-6">
-                <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
-                    <div class="q-container p-4">
+             
+             {% if cont == 0 %}
+         <div class="column">
+            {% endif %}
+        
+                                <img src="{{ '/uploads/' ~ postagem.imagem }}">
+          {% if cont == (album.postagem|length / 5)|round %}
+              </div>
+            {% endif %}
+           
+            {% if cont == (album.postagem|length / 5)|round %}
+           {% set cont = 0 %}
+           
+           {% else %}
+            {% set cont = cont + 1 %}
+            {% endif %}
 
-                        <div class="row">
-                            <div class="col-5 text-center">
-                                   <div class="">
-                                <img src="{{ '/uploads/' ~ postagem.imagem }}" width="200" height="200">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <a class="q-title" href="{{ path('blog_postagem.index', { id: postagem.id }) }}"><h2>{{ postagem.titulo }}</h2></a>
-                                <div class="q-display p-3">
-                                    <i class="fa fa-quote-left mr-3"></i>
-                                    <p class="d-inline">{{ postagem.descricao }}</p>
-                                    <p class="pt-4"><strong>--{{ postagem.autor }}</strong></p>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a class="answer-link" href="#" style="color: #fff;">
-                        <p class="q-display-response text-center p-3">
-                            <i class="fa fa-magic magic-wand"></i> 6 answers
-                        </p>
-                    </a>
-                </div>
+            {% endfor %}       
+             </div>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-    </div>
+    
 {% endblock %}
 {% block javascripts %}
 <script>
