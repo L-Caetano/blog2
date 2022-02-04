@@ -5,32 +5,29 @@
     <div class="text-center my-5">
         <h1>Álbuns</h1>
     </div>
-    <div class="container">
-     {% for albuns in album %}
+  <div class="row">
      
-        <div class="row">
-           
-                <div class="m-5">
-                    <div class="col-md-12 ">
-                    
-                      <div class="col-5 text-center">
-                            <div class="card-2">
-                                {% for postagens in albuns.postagem|slice(1)  %}
-                                    <img src="{{ '/uploads/' ~ postagens.imagem }}"  width="200" height="200">
-                                {% endfor %}    
-                            </div>
-                        </div>
-                    </div>
+<div class="col"></div>
+      <div class="row" style="padding-left:50px;">
+
+     {% for albuns in album %}
+    
+      <div class="col" id="fixed" style="text-align: center;"> 
+      <hr>
+      <h2><b>{{albuns.name}}</b></h2>
+                        <img class="card-2" src="/uploads/2976eb9e8ad37b261441639757710c01.jpg">
                     <br>
-                    <div class="col-md-12 pl-4">
-                        <a href="{{ path('album.view', { id: albuns.id }) }}" >
-                            <h2>{{albuns.name}}</h2> 
+                    
+                        <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
+                              
                         </a>
-                    </div>
-                </div>
-        
+                   
+               </div>
+                 
             {% endfor %}
-        </div>
+
+     </div>
+
      </div>
 
 {% endblock %}

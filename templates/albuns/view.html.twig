@@ -8,6 +8,10 @@
  <div class="container-fluid">
                      <div class="row">
                      {% set cont = 0 %}
+                     {% set apl = (album.postagem|length / 5)|round %}
+                      {% if album.postagem|length < 5 %}
+                  {% set apl = (album.postagem|length / 5)|round(0,'floor') %}
+                    {% endif %}
             {% for postagem in album.postagem %}
              
              {% if cont == 0 %}
@@ -15,11 +19,11 @@
             {% endif %}
         
                                 <img src="{{ '/uploads/' ~ postagem.imagem }}">
-          {% if cont == (album.postagem|length / 5)|round %}
-              </div>
+          {% if cont == apl %}
+              </div> 
             {% endif %}
            
-            {% if cont == (album.postagem|length / 5)|round %}
+            {% if cont == apl %}
            {% set cont = 0 %}
            
            {% else %}
