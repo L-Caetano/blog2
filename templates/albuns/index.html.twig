@@ -3,25 +3,21 @@
 {% block body %}
 
     <div class="text-center my-5">
-        <h1>Álbuns</h1>
+        <h1  class="display-3">Álbuns</h1>
     </div>
   <div class="row">
-     
-<div class="col"></div>
-      <div class="row" style="padding-left:50px;">
 
+      <div class="row" style="padding-left:50px;">
+    
      {% for albuns in album %}
     
       <div class="col" id="fixed" style="text-align: center;"> 
-      <hr>
-      <h2><b>{{albuns.name}}</b></h2>
-                        <img class="card-2" src="/uploads/2976eb9e8ad37b261441639757710c01.jpg">
-                    <br>
-                    
-                        <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
-                              
+      <hr> <a href="{{ path('album.view', { id: albuns.id }>)?page=1 }}" style="color: #000000; text-decoration: none;" >
+      <h2><b>{{albuns.name}}</b></h2>   
+     
+                        <img class="card-2" src="{{ '/uploads/' ~ albuns }}" width ="500px" height="500px">
+                    <br>      
                         </a>
-                   
                </div>
                  
             {% endfor %}
@@ -29,5 +25,16 @@
      </div>
 
      </div>
-
+     <div class="row"><br>aaaaaa</div>        
+ <div class="row">
+    <div class="col-sm-5">
+    </div>
+    <div class="col-sm-7">
+    <div class="navigation" >
+            {{ knp_pagination_render(album) }}
+        </div>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        </div>
 {% endblock %}

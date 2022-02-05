@@ -27,7 +27,7 @@ class Category
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Postagem", mappedBy="category")
      */
-    private $postagem;
+    public $postagem;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)

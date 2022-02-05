@@ -1,18 +1,19 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="text-center my-5">
-      <h1 class="display-3">{{ album.name }}</h1>
+      <h1 class="display-3">{{ albumInfo.name }}</h1>
+        <input id="remember" name="remember" type="checkbox" onclick="validate()" /> Selecionar multiplas imagens
       <hr>
     </div>
 
  <div class="container-fluid">
                      <div class="row">
                      {% set cont = 0 %}
-                     {% set apl = (album.postagem|length / 5)|round %}
-                      {% if album.postagem|length < 5 %}
-                  {% set apl = (album.postagem|length / 5)|round(0,'floor') %}
+                     {% set apl = (album.items|length / 5)|round %}
+                      {% if album.items|length < 5 %}
+                  {% set apl = (album.items|length / 5)|round(0,'floor') %}
                     {% endif %}
-            {% for postagem in album.postagem %}
+            {% for postagem in album.items %}
              
              {% if cont == 0 %}
          <div class="column">
@@ -33,10 +34,108 @@
             {% endfor %}       
              </div>
             </div>
-    
+            <hr>
+     <div class="row">
+    <div class="col-sm-5">
+    </div>
+    <div class="col-sm-7">
+    <div class="navigation" >
+            {{ knp_pagination_render(album) }}
+        </div>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        </div>
+          <nav class="navbar fixed-bottom navbar-light bg-light" id="navbarFooterUser" style="visibility: hidden;">
+  <div class="container-fluid">
+    <button id = "loadstudent" type="button" class="btn btn-primary">Adicionar ao meu album</button>
+  </div>
+</nav>
 {% endblock %}
 {% block javascripts %}
 <script>
 
+</script>
+{% endblock %}
+{% block javascripts %}
+<script>
+let ids = [];
+window.onload = function() {
+validate();
+} 
+  function swalSelect(data){
+       var options = {};
+        $.map(data,
+            function(o) {
+                options[o.id] = o.name;
+            });
+      console.log(data)
+ const { value: fruit } =  Swal.fire({
+  title: 'Selecione o album a salvar as imagens',
+  input: 'select',
+  inputOptions: options,
+  inputPlaceholder: 'Selecione um album',
+  showCancelButton: true,
+  inputValidator: (value) => {
+    return new Promise((resolve) => {
+     console.log(value)
+    })
+  }
+})
+
+if (fruit) {
+  Swal.fire(`You selected: ${fruit}`)
+}
+      }
+$(document).ready(function(){   
+         $("#loadstudent").click( function(){  
+             
+            $.ajax({  
+               url:        '{{ path("album.getAlbums")}}',  
+               type:       'GET',   
+               dataType:   'json',  
+               async:      true,  
+               
+               success: function(data, status) {       
+                  for(i = 0; i < data.length; i++) {  
+                     student = data[i];  
+                     console.log(data[i])
+                  }  
+                   swalSelect(data)
+               },  
+               error : function(xhr, textStatus, errorThrown) {  
+                  alert('Ajax request failed.');  
+               }  
+            });  
+         });  
+      });
+function validate(){
+    if(document.getElementById('remember').checked){
+     document.getElementById('navbarFooterUser').style.visibility = 'visible';
+    }else{
+         document.getElementById('navbarFooterUser').style.visibility = 'hidden';
+    }
+}
+
+function getId(id){
+    if(document.getElementById('remember').checked){
+         
+    if(ids.find(element=> element == id)){
+     document.getElementById(id).style.border = "none";
+     var index = ids.indexOf(id);
+    if (index !== -1) {
+     ids.splice(index, 1);
+} 
+     }else{
+           ids.push(id);
+     document.getElementById(id).style.border = "thick solid #3d3d40"; 
+     document.getElementById(id).style.borderRadius="25px" 
+    console.log(ids)
+     }
+    }
+   
+    
+}
+ 
 </script>
 {% endblock %}

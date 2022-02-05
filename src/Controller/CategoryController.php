@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
 /**
  * @Route("/album", name="album.")
  */
@@ -25,8 +27,12 @@ class CategoryController extends AbstractController{
     /**
      * @Route("/todos", name="albuns")
      */
-    public function index(){
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+    public function index(PaginatorInterface $paginator,Request $request){
+        $cat = $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $categories = $paginator->paginate(
+         $cat, $request->query->getInt('page',1),6);
+         //dd($categories->items);
+
         return $this->render('albuns/index.html.twig', [
             'album' => $categories,
         ]);
@@ -35,10 +41,15 @@ class CategoryController extends AbstractController{
     /**
      * @Route("/view/{id}", name="view")
      */
-    public function viewAlbumAction(Category $category){
+    public function viewAlbumAction(Category $cat, PaginatorInterface $paginator,Request $request){
         $em=$this->getDoctrine()->getManager();
+        $category = $paginator->paginate(
+        $cat->postagem, $request->query->getInt('page',1),16);
+      // $category->name = $cat->name;
+        // dd($category,$cat,$em);
         return $this->render('albuns/view.html.twig', [
-            'album' => $category,
+         'albumInfo' => $cat,
+         'album' => $category,
         ]);
     }
 /** 
