@@ -45,7 +45,7 @@ class CategoryController extends AbstractController{
     public function viewAlbumAction(Category $cat, PaginatorInterface $paginator,Request $request){
         $em=$this->getDoctrine()->getManager();
         $category = $paginator->paginate(
-        $cat->postagem, $request->query->getInt('page',1),16);
+        $cat->getPostagem(), $request->query->getInt('page',1),16);
       // $category->name = $cat->name;
         // dd($category,$cat,$em);
         return $this->render('albuns/view.html.twig', [
