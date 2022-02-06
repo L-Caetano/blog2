@@ -95,6 +95,7 @@ public function postAlbumAction(Request $request) {
          }
       
       }
+      return new JsonResponse(array('success' => true));
    }
 
       /**
@@ -108,6 +109,7 @@ public function postAlbumAction(Request $request) {
          $em = $this->getDoctrine()->getManager();
          $em->persist($album);
          $em->flush();
+         return $this->redirectToRoute('album.albuns');
       }
 
 
