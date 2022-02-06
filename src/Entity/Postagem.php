@@ -39,10 +39,6 @@ class Postagem
      */
     private $autor;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="postagem")
-     */
-    private $category;
 
     /**
      * @ORM\ManyToMany(targetEntity=Imagem::class, mappedBy="IdAlbum")
@@ -55,9 +51,15 @@ class Postagem
      */
     private $usuario;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="postagem")
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->Imagens = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,6 +162,33 @@ class Postagem
     public function setUsuario(?User $usuario): self
     {
         $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addPostagem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removePostagem($this);
+        }
 
         return $this;
     }

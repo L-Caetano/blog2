@@ -89,8 +89,8 @@ public function postAlbumAction(Request $request) {
       if(is_array($images)){
          foreach($images as $image){
             $post = $em->getRepository(Postagem::class)->find($image);
-            $post->setCategory($category);
-            $em->persist($post);
+            $category->addPostagem($post);
+            $em->persist($category);
             $em->flush();
          }
       

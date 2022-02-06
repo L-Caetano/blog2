@@ -24,10 +24,6 @@ class Category
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Postagem", mappedBy="category")
-     */
-    public $postagem;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
@@ -49,6 +45,11 @@ class Category
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Postagem::class, inversedBy="categories")
+     */
+    private $postagem;
 
     public function __construct()
     {

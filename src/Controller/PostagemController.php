@@ -40,14 +40,18 @@ class PostagemController extends AbstractController
            //dd($postagem);
             $em = $this->getDoctrine()->getManager();
             //dd($request->files->get('postagem'));
+
             /** @var UploadedFile $file */
             $file = $request->files->get('post')['imagem'];
+            dd($request->files->get('post')['imagem']);
             if($file){
+                
                 $filename = md5(uniqid()).'.'.$file->guessClientExtension();
                 $file->move(
                     $this->getParameter('uploads_dir'),
                         $filename
                 );
+                
                 $postagem->setImagem($filename);
                 $postagem->setUsuario($this->getUser());
                 $session = new Session();
