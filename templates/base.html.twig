@@ -51,10 +51,10 @@
     </style>
     {% endblock %}
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-dark" style="height: 100px;">
+<body style="background-color: #f6aa59">
+<nav class="navbar navbar-expand-lg navbar-dark" style="height: 100px; background: #000000">
     <a class="navbar-brand" href="{{ path('blog_homepage') }}" style="text-decoration: none;">
-        <i style="color: white; font-size: 2rem;" class="pb-1 fad fa-cauldron"></i>
+        <img src="{{ '/logo.jpg' }}"  width ="100px" height="100px">
         <p class=" d-inline font-weight-bold" style="color: white;">Home</p>
     </a>
     <a class="navbar-link" href="{{ path('album.albuns') }}" style="text-decoration: none;">
@@ -82,9 +82,9 @@
         </a>
     {% endif %}
     {% if app.user %}
-        <a href="{{ path('app_logout') }}" class="btn btn-dark ml-auto" style="color: white;">Logout</a>
+        <a href="{{ path('app_logout') }}" class="btn btn-dark ml-auto" style="color: white;">Sair</a>
       {% else %}
-        <a href="{{ path('app_login') }}" class="btn btn-dark ml-auto" style="color: white;">Login</a>
+        <a href="{{ path('app_login') }}" class="btn btn-dark ml-auto" style="color: white;">Entrar</a>
     {% endif %}
 
 </nav>
@@ -102,8 +102,10 @@
 </footer>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-{% block javascripts %}
-{% endblock %}
+
 
 </body>
+{% block footer %}
+             {% include 'footer.html.twig' %}
+            {% endblock %}
 </html>

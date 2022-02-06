@@ -1,9 +1,26 @@
 {% extends 'base.html.twig' %}
-{% block body %}
+ 
+{% block body %} 
+<style>
+  .container {
+  position: relative;
+  text-align: center;
+  color: white;
+} 
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
+<div class="row"  style="padding-top: 10px">
+<div class="col"></div>
+ <div class="col-lg-11 shadow p-3 mb-5 bg-white rounded">
     <div class="text-center my-5">
-      <h1 class="display-3">{{ albumInfo.name }}</h1>
-        <input id="remember" name="remember" type="checkbox" onclick="validate()" /> Selecionar multiplas imagens
-      <hr>
+      <h1 class="display-3">{{ albumInfo.name }} </h1>
+       
+      <hr><input id="remember" name="remember" type="checkbox" onclick="validate()" /> Selecionar multiplas imagens
     </div>
 
  <div class="container-fluid">
@@ -18,8 +35,11 @@
              {% if cont == 0 %}
          <div class="column">
             {% endif %}
-        
-                                <img src="{{ '/uploads/' ~ postagem.imagem }}">
+            <div class="container" onclick="getId({{postagem.id}})">
+            
+                                <img src="{{ '/uploads/' ~ postagem.imagem }}" id="{{postagem.id}}" >
+                                <div class="centered"  id="sel{{postagem.id}}" style="visibility: hidden;"><h3>Selecionado</h3></div> 
+                                </div>
           {% if cont == apl %}
               </div> 
             {% endif %}
@@ -46,17 +66,16 @@
         <div class="col-sm-1">
         </div>
         </div>
+        </div>
+<div class="col"></div>
+</div>
+
           <nav class="navbar fixed-bottom navbar-light bg-light" id="navbarFooterUser" style="visibility: hidden;">
   <div class="container-fluid">
     <button id = "loadstudent" type="button" class="btn btn-primary">Adicionar ao meu album</button>
   </div>
 </nav>
-{% endblock %}
-{% block javascripts %}
-<script>
-
-</script>
-{% endblock %}
+{% endblock %} 
 {% block javascripts %}
 <script>
 let ids = [];
@@ -78,7 +97,7 @@ validate();
   showCancelButton: true,
   inputValidator: (value) => {
     return new Promise((resolve) => {
-     console.log(value)
+     console.log("jesus",value)
     })
   }
 })
@@ -121,15 +140,16 @@ function getId(id){
     if(document.getElementById('remember').checked){
          
     if(ids.find(element=> element == id)){
-     document.getElementById(id).style.border = "none";
+     document.getElementById(id).style.filter = "grayscale(0) brightness(1)";
+      document.getElementById("sel"+id).style.visibility  = 'hidden'
      var index = ids.indexOf(id);
     if (index !== -1) {
      ids.splice(index, 1);
 } 
      }else{
            ids.push(id);
-     document.getElementById(id).style.border = "thick solid #3d3d40"; 
-     document.getElementById(id).style.borderRadius="25px" 
+     document.getElementById(id).style.filter ="grayscale(1) brightness(0.5)" 
+     document.getElementById("sel"+id).style.visibility  = 'visible'
     console.log(ids)
      }
     }

@@ -1,7 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-
+<div class="row"  style="padding-top: 10px">
+<div class="col"></div>
+ <div class="col-11 shadow p-3 mb-5 bg-white rounded">
     <div class="text-center my-5">
         <h1  class="display-3">Álbuns</h1>
     </div>
@@ -12,10 +14,10 @@
      {% for albuns in album %}
     
       <div class="col" id="fixed" style="text-align: center;"> 
-      <hr> <a href="{{ path('album.view', { id: albuns.id }>)?page=1 }}" style="color: #000000; text-decoration: none;" >
+      <hr> <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
       <h2><b>{{albuns.name}}</b></h2>   
      
-                        <img class="card-2" src="{{ '/uploads/' ~ albuns }}" width ="500px" height="500px">
+                        <img class="card-2" src="{{ '/uploads/' ~ albuns }}" width ="450px" height="400px">
                     <br>      
                         </a>
                </div>
@@ -25,16 +27,24 @@
      </div>
 
      </div>
-     <div class="row"><br>aaaaaa</div>        
+     <div class="containner">
+     <div class="row">
+     </div>   
+          
  <div class="row">
     <div class="col-sm-5">
     </div>
     <div class="col-sm-7">
     <div class="navigation" >
+    <br><br>
             {{ knp_pagination_render(album) }}
         </div>
         </div>
         <div class="col-sm-1">
         </div>
+        </div>
+        </div></div>
+        <div class="col"></div>
+
         </div>
 {% endblock %}

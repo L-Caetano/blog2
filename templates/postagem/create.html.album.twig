@@ -1,17 +1,16 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
 
     <div class="container">
-        <div class="row">
-            <div class="col-12">
+        <div class="row" style="padding-top: 10px">
+         <div class="col-sm-1"></div>
+            <div class="col shadow p-3 mb-5 bg-white rounded">
             <br>
-            <h1>Nova Imagem</h1>
+           <h1 class="display-3">Nova Imagem</h1>
+           <hr>
                <br>
                 {{ form(form) }}
             </div>
-
         </div>
     </div>
-
 {% endblock %}
