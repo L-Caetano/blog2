@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 use App\Entity\Category;
+use App\Entity\Postagem;
 use App\Entity\User;
 use App\Form\CategoryType;
 use App\Form\PostType;
@@ -81,13 +82,13 @@ public function postAlbumAction(Request $request) {
       $images = $request->request->get('images');
       $request->request->get('album');
       /** @var User $user */
-      $user = $this->get('security.context')->getToken()->getUser();
+      $user = $this->getUser();
       //Acha a category  pelo id
       /** @var Category $category */
       $category = $this->getDoctrine()->getRepository(Category::class)->find($request->request->get('album'));
       if(is_array($images)){
          foreach($images as $image){
-            $post = $em->getRepository(Post::class)->find($image);
+            $post = $em->getRepository(Postagem::class)->find($image);
             $post->setCategory($category);
             $em->persist($post);
             $em->flush();
@@ -108,6 +109,6 @@ public function postAlbumAction(Request $request) {
          $em->persist($album);
          $em->flush();
       }
-      
+
 
 }
