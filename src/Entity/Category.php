@@ -44,9 +44,21 @@ class Category
      */
     private $update_date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="categories")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario;
+
     public function __construct()
     {
         $this->postagem = new ArrayCollection();
+        if($this->creation_date == null){
+            $this->creation_date = new \DateTime();
+        }
+        if($this->update_date == null){
+            $this->update_date = new \DateTime();
+        }
     }
     
     public function getId(): ?int
@@ -158,6 +170,18 @@ class Category
     public function setImage($image)
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getUsuario(): ?User
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?User $usuario): self
+    {
+        $this->usuario = $usuario;
 
         return $this;
     }

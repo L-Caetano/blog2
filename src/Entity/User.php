@@ -44,9 +44,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $Imagens;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="usuario")
+     */
+    private $categories;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Postagem::class, mappedBy="usuario")
+     */
+    private $postagems;
+
     public function __construct()
     {
         $this->Imagens = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->postagems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,6 +169,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($imagen->getUsuario() === $this) {
                 $imagen->setUsuario(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getUsuario() === $this) {
+                $category->setUsuario(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Postagem[]
+     */
+    public function getPostagems(): Collection
+    {
+        return $this->postagems;
+    }
+
+    public function addPostagem(Postagem $postagem): self
+    {
+        if (!$this->postagems->contains($postagem)) {
+            $this->postagems[] = $postagem;
+            $postagem->setUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostagem(Postagem $postagem): self
+    {
+        if ($this->postagems->removeElement($postagem)) {
+            // set the owning side to null (unless already changed)
+            if ($postagem->getUsuario() === $this) {
+                $postagem->setUsuario(null);
             }
         }
 

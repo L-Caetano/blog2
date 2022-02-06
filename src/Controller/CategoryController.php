@@ -32,7 +32,7 @@ class CategoryController extends AbstractController{
         $categories = $paginator->paginate(
          $cat, $request->query->getInt('page',1),6);
          //dd($categories->items);
-
+         
         return $this->render('albuns/index.html.twig', [
             'album' => $categories,
         ]);
@@ -74,17 +74,26 @@ public function getAlbumsAction(Request $request) {
     }
  }    
  /** 
-   * @Route("/album/PostAjax", name="postAlbum") 
+   * @Route("/album/salvaAlbum", name="api_post_album", methods={"POST"})) 
 */ 
 public function postAlbumAction(Request $request) {  
-    $a = $this->getDoctrine()->getManager();
-   // $b = new Imagem();
-    if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {  
-       $jsonData = array();  
-       $idx = 0;  
-       
-       return new JsonResponse($jsonData); 
-    }
- }
+    $em = $this->getDoctrine()->getManager();
+      $images = $request->request->get('images');
+      $request->request->get('album');
+      /** @var User $user */
+      $user = $this->get('security.context')->getToken()->getUser();
+      //Acha a category  pelo id
+      /** @var Category $category */
+      $category = $this->getDoctrine()->getRepository(Category::class)->find($request->request->get('album'));
+      if(is_array($images)){
+         foreach($images as $image){
+            $post = $em->getRepository(Post::class)->find($image);
+            $post->setCategory($category);
+            $em->persist($post);
+            $em->flush();
+         }
+      
+      }
+   }
 
 }
