@@ -49,6 +49,12 @@ class Postagem
      */
     private $Imagens;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="postagems")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario;
+
     public function __construct()
     {
         $this->Imagens = new ArrayCollection();
@@ -142,6 +148,18 @@ class Postagem
         if ($this->Imagens->removeElement($imagen)) {
             $imagen->removeIdAlbum($this);
         }
+
+        return $this;
+    }
+
+    public function getUsuario(): ?User
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?User $usuario): self
+    {
+        $this->usuario = $usuario;
 
         return $this;
     }
