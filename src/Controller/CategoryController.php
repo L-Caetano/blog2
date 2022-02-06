@@ -96,4 +96,18 @@ public function postAlbumAction(Request $request) {
       }
    }
 
+      /**
+      * @Route("/album/create", name="create")
+      */
+      public function postAlbumCreateAction(Request $request){
+         $album = new Category();
+         $album->setName($request->request->get('name'));
+         $user = $this->get('security.context')->getToken()->getUser();
+         $album->setUsuario($user);
+         $em = $this->getDoctrine()->getManager();
+         $em->persist($album);
+         $em->flush();
+      }
+      
+
 }

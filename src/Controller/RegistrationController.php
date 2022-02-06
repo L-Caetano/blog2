@@ -140,7 +140,7 @@ class RegistrationController extends AbstractController
      */
     public function createCat(Request $request){
         $categoria = new Category();
-
+        
         $form = $this->createForm(CategoryType::class, $categoria);
         $form->handleRequest($request);
         if($form->isSubmitted()){
@@ -148,6 +148,7 @@ class RegistrationController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $categoria->setCreationDate(new \DateTime());
             $categoria->setUpdateDate(new \DateTime());
+            $categoria->setUsuario($this->getUser());
             $em->persist($categoria);
             $em->flush();
             $this->addFlash('sucesso', 'Category Criada');

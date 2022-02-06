@@ -49,7 +49,7 @@ class PostagemController extends AbstractController
                         $filename
                 );
                 $postagem->setImagem($filename);
-
+                $postagem->setUsuario($this->getUser());
                 $session = new Session();
                 $postagem->setAutor($session->get('_security.last_username'));
             }
@@ -123,5 +123,14 @@ class PostagemController extends AbstractController
         }
 
         return $rep;
+    }
+
+    /** 
+     * @Route("/createImagens", name="create_imagens")
+     * @param Request $request
+     */
+    public function createImagens(Request $request){
+
+
     }
 }
