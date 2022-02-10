@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -48,18 +49,20 @@ class Category
 
     /**
      * @ORM\ManyToMany(targetEntity=Postagem::class, inversedBy="categories")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $postagem;
 
+
     public function __construct()
     {
-        $this->postagem = new ArrayCollection();
         if($this->creation_date == null){
             $this->creation_date = new \DateTime();
         }
         if($this->update_date == null){
             $this->update_date = new \DateTime();
         }
+        $this->postagem = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -79,35 +82,7 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection|Postagem[]
-     */
-    public function getPostagem(): Collection
-    {
-        return $this->postagem;
-    }
 
-    public function addPostagem(Postagem $postagem): self
-    {
-        if (!$this->postagem->contains($postagem)) {
-            $this->postagem[] = $postagem;
-            $postagem->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removePostagem(Postagem $postagem): self
-    {
-        if ($this->postagem->removeElement($postagem)) {
-            // set the owning side to null (unless already changed)
-            if ($postagem->getCategory() === $this) {
-                $postagem->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
     public function __toString(): string
     {
         // TODO: Implement __toString() method.
@@ -183,6 +158,30 @@ class Category
     public function setUsuario(?User $usuario): self
     {
         $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Postagem[]
+     */
+    public function getPostagem(): Collection
+    {
+        return $this->postagem;
+    }
+
+    public function addPostagem(Postagem $postagem): self
+    {
+        if (!$this->postagem->contains($postagem)) {
+            $this->postagem[] = $postagem;
+        }
+
+        return $this;
+    }
+
+    public function removePostagem(Postagem $postagem): self
+    {
+        $this->postagem->removeElement($postagem);
 
         return $this;
     }

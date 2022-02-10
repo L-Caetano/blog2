@@ -24,6 +24,7 @@
     </div>
 
  <div class="container-fluid">
+     {% dump(album) %}
                      <div class="row">
                      {% set cont = 0 %}
                      {% set apl = (album.items|length / 5)|round %}
@@ -36,7 +37,7 @@
          <div class="column">
             {% endif %}
             <div class="container" onclick="getId({{postagem.id}})">
-            
+
                                 <img src="{{ '/uploads/' ~ postagem.imagem }}" id="{{postagem.id}}" >
                                 <div class="centered"  id="sel{{postagem.id}}" style="visibility: hidden;"><h3>Selecionado</h3></div> 
                                 </div>

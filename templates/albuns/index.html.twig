@@ -16,8 +16,9 @@
       <div class="col" id="fixed" style="text-align: center;"> 
       <hr> <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
       <h2><b>{{albuns.name}}</b></h2>   
-     
-                        <img class="card-2" src="{{ '/uploads/' ~ albuns }}" width ="450px" height="400px">
+                    {% for imagens in imagem|slice(1, 1) %}
+                        <img class="card-2" src="{{ '/uploads/' ~ imagens.imagem }}" width ="450px" height="400px">
+                    {% endfor %}
                     <br>      
                         </a>
                </div>

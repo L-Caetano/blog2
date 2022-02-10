@@ -6,6 +6,7 @@ use App\Entity\Postagem;
 use App\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,24 +37,33 @@ class PostagemController extends AbstractController
 
         $form = $this->createForm(PostType::class, $postagem);
         $form->handleRequest($request);
+        $valid_ext = array('png','jpeg','jpg');
         if($form->isSubmitted()){
            //dd($postagem);
             $em = $this->getDoctrine()->getManager();
             //dd($request->files->get('postagem'));
-
+              // file extension
+          
             /** @var UploadedFile $file */
             $file = $request->files->get('post')['imagem'];
-            dd($request->files->get('post')['imagem']);
+            //dd($request->files->get('post')['imagem']);
             if($file){
-                
+                $titulo = $file->getClientOriginalName();
+                $file_extension = $file->guessClientExtension();
+                $file_extension = strtolower($file_extension);
+                if(!in_array($file_extension, $valid_ext)){
+                    $this->addFlash('Erro', 'Erro na postagem');
+                    return new JsonResponse('Extensão inválida');
+                }
                 $filename = md5(uniqid()).'.'.$file->guessClientExtension();
                 $file->move(
                     $this->getParameter('uploads_dir'),
                         $filename
                 );
-                
+                //$postagem->setTitulo($filme->get)
                 $postagem->setImagem($filename);
                 $postagem->setUsuario($this->getUser());
+                $postagem->setTitulo($titulo);
                 $session = new Session();
                 $postagem->setAutor($session->get('_security.last_username'));
             }

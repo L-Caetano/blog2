@@ -6,7 +6,9 @@ use App\Repository\PostagemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\ORM\Mapping\InverseJoinColumn;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
 /**
  * @ORM\Entity(repositoryClass=PostagemRepository::class)
  */
@@ -25,7 +27,7 @@ class Postagem
     private $titulo;
 
     /**
-     * @ORM\Column(type="string", length=800)
+     * @ORM\Column(type="string", length=800, nullable=true)
      */
     private $descricao;
 
@@ -55,6 +57,7 @@ class Postagem
      * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="postagem")
      */
     private $categories;
+
 
     public function __construct()
     {
@@ -115,14 +118,9 @@ class Postagem
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function setCategory(?Category $categories): self
     {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
+        $this->category = $categories;
 
         return $this;
     }
@@ -192,4 +190,10 @@ class Postagem
 
         return $this;
     }
+
+
+
+
+
+
 }
