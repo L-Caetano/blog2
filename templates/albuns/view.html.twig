@@ -16,7 +16,7 @@
 </style>
 <div class="row"  style="padding-top: 10px">
 <div class="col"></div>
- <div class="col-lg-11 shadow p-3 mb-5 bg-white rounded">
+ <div class="col-10 shadow p-3 mb-5 bg-white rounded">
     <div class="text-center my-5">
       <h1 class="display-3">{{ albumInfo.name }} </h1>
        
@@ -26,12 +26,13 @@
  <div class="container-fluid">
                      <div class="row">
                      {% set cont = 0 %}
+                      {% set loopC = 0 %}
                      {% set apl = (album.items|length / 5)|round %}
                       {% if album.items|length < 5 %}
                   {% set apl = (album.items|length / 5)|round(0,'floor') %}
                     {% endif %}
             {% for postagem in album.items %}
-             
+           {% set loopC = loopC + 1 %}
              {% if cont == 0 %}
          <div class="column">
             {% endif %}
@@ -40,19 +41,20 @@
                                 <img src="{{ '/uploads/' ~ postagem.imagem }}" id="{{postagem.id}}" >
                                 <div class="centered"  id="sel{{postagem.id}}" style="visibility: hidden;"><h3>Selecionado</h3></div> 
                                 </div>
-          {% if cont == apl %}
-              </div> 
-            {% endif %}
+         
            
             {% if cont == apl %}
            {% set cont = 0 %}
-           
            {% else %}
             {% set cont = cont + 1 %}
             {% endif %}
-
-            {% endfor %}       
+             {% if cont == 0 or loopC == (album.items|length) %}
+              </div> 
+            {% endif %}
+             
+            {% endfor %}   
              </div>
+           
             </div>
             <hr>
      <div class="row">
@@ -72,7 +74,7 @@
 
           <nav class="navbar fixed-bottom navbar-light bg-light" id="navbarFooterUser" style="visibility: hidden;">
   <div class="container-fluid">
-    <button id = "loadstudent" type="button" class="btn btn-primary">Adicionar ao meu album</button>
+    <button id = "navBut" type="button" class="btn btn-primary">Adicionar ao meu album</button>
   </div>
 </nav>
 {% block javascripts %}
@@ -90,26 +92,31 @@ validate();
                 options[o.id] = o.name;
             });
       console.log(data)
- const { value: fruit } =  Swal.fire({
+ const { value: album } =  Swal.fire({
   title: 'Selecione o album a salvar as imagens',
   input: 'select',
   inputOptions: options,
   inputPlaceholder: 'Selecione um album',
   showCancelButton: true,
   inputValidator: (value) => {
+    console.log("oiii")
     return new Promise((resolve) => {
-     console.log("jesus",value)
+     
+      $.post('{{ path("album.api_post_album")}}',
+  {
+        album: value,
+        images: ids
+  },
+  function(data, status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
     })
   }
 })
-
-if (fruit) {
-  Swal.fire(`You selected: ${fruit}`)
-}
-      }
+ }
 $(document).ready(function(){   
-         $("#loadstudent").click( function(){  
-              console.log("jesus")
+         $("#navBut").click( function(){  
+              //console.log("jesus")
             $.ajax({  
                url:        '{{ path("album.getAlbums")}}',  
                type:       'GET',   
@@ -129,11 +136,17 @@ $(document).ready(function(){
             });  
          });  
       });
+
 function validate(){
     if(document.getElementById('remember').checked){
      document.getElementById('navbarFooterUser').style.visibility = 'visible';
     }else{
          document.getElementById('navbarFooterUser').style.visibility = 'hidden';
+         ids.forEach(element => {
+            document.getElementById(element).style.filter = "grayscale(0) brightness(1)";
+      document.getElementById("sel"+element).style.visibility  = 'hidden';
+         }) 
+         ids = []
     }
 }
 
