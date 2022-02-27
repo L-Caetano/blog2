@@ -64,23 +64,26 @@
       <li class="nav-item">
     <a class="navbar-link" href="{{ path('album.albuns') }}" style="text-decoration: none;">
         <p class=" d-inline font-weight-bold" style="color: white;">Albuns</p>
-    </a>
+    </a>&nbsp;&nbsp;
      </li>
     {% if is_granted('ROLE_ADMIN') %}
       <li class="nav-item">
     <a class="navbar-link" href="{{ path('blog_postagem.create') }}" style="text-decoration: none;">
         <p class=" d-inline font-weight-bold" style="color: white;"> Nova Imagem</p>
     </a>
-      </li>  
+    &nbsp;&nbsp;
+      </li>
       <li class="nav-item">
         <a class="navbar-link" href="{{ path('createCategory') }}" style="text-decoration: none;">
             <p class=" d-inline font-weight-bold" style="color: white;"> Novo Album</p>
-        </a></li>
+        </a>
+        &nbsp;&nbsp;
+        </li>
         
         <li class="nav-item">
         <a class="navbar-link" href="{{ path('dashboard') }}" style="text-decoration: none;">
             <p class=" d-inline font-weight-bold" style="color: white;"> Controle de usuário</p>
-        </a></li>
+        </a>&nbsp;&nbsp;</li>
          </ul>
     {% endif %}
     {% if app.user %}
