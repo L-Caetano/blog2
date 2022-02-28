@@ -53,9 +53,17 @@ class Category
      */
     private $postagem;
 
+    //Se for falso é porque foi criado por user normal e nao vai aparecer para todo mundo somente para o usuario que criou
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $public;
+
 
     public function __construct()
-    {
+    {   
+
+      
         if($this->creation_date == null){
             $this->creation_date = new \DateTime();
         }
@@ -102,6 +110,7 @@ class Category
     }
     public function prePersist()
     {
+
         $this->creation_date = new \DateTime();
     }
     
@@ -182,6 +191,18 @@ class Category
     public function removePostagem(Postagem $postagem): self
     {
         $this->postagem->removeElement($postagem);
+
+        return $this;
+    }
+
+    public function getPublic(): ?bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(bool $public): self
+    {
+        $this->public = $public;
 
         return $this;
     }

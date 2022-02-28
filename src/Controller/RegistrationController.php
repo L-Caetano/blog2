@@ -143,10 +143,22 @@ class RegistrationController extends AbstractController
         
         $form = $this->createForm(CategoryType::class, $categoria);
         $form->handleRequest($request);
+        
         if($form->isSubmitted()){
             //dd($postagem);
             $em = $this->getDoctrine()->getManager();
             $categoria->setCreationDate(new \DateTime());
+            //verifica se o usuario é admin
+            $user = $this->getUser();
+            $role= $user->getRoles();
+                if($role[0] == 'ROLE_ADMIN'){
+                    $categoria->setPublic(true);
+                  
+                }
+                else{
+                    $categoria->setPublic(false);
+                }
+            
             $categoria->setUpdateDate(new \DateTime());
             $categoria->setUsuario($this->getUser());
             $em->persist($categoria);

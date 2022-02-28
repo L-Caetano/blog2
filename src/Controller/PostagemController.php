@@ -39,14 +39,13 @@ class PostagemController extends AbstractController
         $form->handleRequest($request);
         $valid_ext = array('png','jpeg','jpg');
         if($form->isSubmitted()){
-           //dd($postagem);
             $em = $this->getDoctrine()->getManager();
-            //dd($request->files->get('postagem'));
               // file extension
           
             /** @var UploadedFile $file */
             $file = $request->files->get('post')['imagem'];
-            //dd($request->files->get('post')['imagem']);
+            //pega toda a data do request
+            $data = $request->request->get('post');
             if($file){
                 $titulo = $file->getClientOriginalName();
                 $file_extension = $file->guessClientExtension();
@@ -60,15 +59,26 @@ class PostagemController extends AbstractController
                     $this->getParameter('uploads_dir'),
                         $filename
                 );
-                //$postagem->setTitulo($filme->get)
                 $postagem->setImagem($filename);
                 $postagem->setUsuario($this->getUser());
                 $postagem->setTitulo($titulo);
+                //for each para cada categoria que vier
+                foreach($request->request->get('post')['categories'] as $cat){
+                    /** @var Category $categoria */
+                    $categoria= $this->getDoctrine()->getRepository(Category::class)->find($cat);
+                    $categoria->addPostagem($postagem);
+                    //dd($categoria);
+                    $postagem->addCategory($categoria);
+                    
+                    $em->persist($categoria);
+                }
                 $session = new Session();
                 $postagem->setAutor($session->get('_security.last_username'));
+                
             }
             $em->persist($postagem);
             $em->flush();
+
             $this->addFlash('sucesso', 'Postagem Criada');
             return $this->redirect($this->generateUrl('blog_postagem.list'));
         }

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\CategoryType;
 use App\Form\PostType;
 use App\Form\UserType;
+use App\Repository\CategoryRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,12 +30,11 @@ class CategoryController extends AbstractController{
      * @Route("/todos", name="albuns")
      */
     public function index(PaginatorInterface $paginator,Request $request){
-        $cat = $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(['public'=>true]);
         $postagem = $this->getDoctrine()->getRepository(Postagem::class)->findAll();
         $categories = $paginator->paginate(
          $cat, $request->query->getInt('page',1),6);
          //dd($categories->items);
-         dump($postagem);
         return $this->render('albuns/index.html.twig', [
             'album' => $categories,
             'imagem' => $postagem
@@ -65,6 +65,7 @@ class CategoryController extends AbstractController{
         $request->request->get('album');
         /** @var User $user */
         $user = $this->getUser();
+  
         //Acha a category  pelo id
         /** @var Category $category */
         $category = $this->getDoctrine()->getRepository(Category::class)->find($request->request->get('album'));
@@ -85,9 +86,20 @@ class CategoryController extends AbstractController{
      */
     public function postAlbumCreateAction(Request $request){
         $album = new Category();
-        $album->setName($request->request->get('name'));
         $user = $this->get('security.context')->getToken()->getUser();
         $album->setUsuario($user);
+        //verifica se o usuario é admin
+        foreach($user->getRoles() as $role){
+           
+            if(in_array('ROLE_ADMIN',$role)){
+                $album->setPublic(true);
+
+            }
+            else{
+                $album->setPublic(false);
+            }
+        }
+        $album->setName($request->request->get('name'));
         $em = $this->getDoctrine()->getManager();
         $em->persist($album);
         $em->flush();
@@ -120,14 +132,20 @@ class CategoryController extends AbstractController{
      */
     public function viewAlbumAction(Category $cat, PaginatorInterface $paginator,Request $request){
       $em=$this->getDoctrine()->getManager();
-      $category = $paginator->paginate(
-      $cat->getPostagem(), $request->query->getInt('page',1),16);
-    // $category->name = $cat->name;
-      // dd($category,$cat,$em);
-      return $this->render('albuns/view.html.twig', [
-       'albumInfo' => $cat,
-       'album' => $category,
-      ]);
+        //cria querybuilder para achar por cat
+        // $query = $this->getDoctrine()->getRepository(Category::class)->createQueryBuilder('a')
+        // ->innerJoin('a.postagem', 'c', 'WITH', 'c.categories = :id')
+        // ->setParameter('id', $cat->getId())->getQuery()->getResult();
+        $catRepo= $em->getRepository(Category::class)->getPostagens($cat->getId());
+        //dd($catRepo);
+        $category = $paginator->paginate(
+        $cat->getPostagem(), $request->query->getInt('page',1),16);
+        // $category->name = $cat->name;
+        // dd($category,$cat,$em);
+        return $this->render('albuns/view.html.twig', [
+        'albumInfo' => $cat,
+        'album' => $category,
+        ]);
     }
 
 
