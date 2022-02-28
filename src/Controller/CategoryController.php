@@ -103,24 +103,15 @@ class CategoryController extends AbstractController{
      * @Route("/view/{id}", name="view")
      */
     public function viewAlbumAction(Category $cat, PaginatorInterface $paginator,Request $request){
-        $em=$this->getDoctrine()->getManager();
-        $category = $paginator->paginate(
-            $cat, $request->query->getInt('page',1),6);
-        $id= $cat->getId();
-         //$postagem = $this->getDoctrine()->getRepository(Postagem::class)->findBy(array('category' => $id));
-         //dd($postagem);
-
-        //dd($postagem);
-     
-       // $imagens = $this->getDoctrine()->getRepository(Postagem::class)->findBy(array('categories' => array($cat)));
-
-       // dd($$cat->getPostagem());
-      // $category->name = $cat->name;
-         
-        return $this->render('albuns/view.html.twig', [
-         'albumInfo' => $cat,
-         'album' => $category,
-        ]);
+      $em=$this->getDoctrine()->getManager();
+      $category = $paginator->paginate(
+      $cat->getPostagem(), $request->query->getInt('page',1),16);
+    // $category->name = $cat->name;
+      // dd($category,$cat,$em);
+      return $this->render('albuns/view.html.twig', [
+       'albumInfo' => $cat,
+       'album' => $category,
+      ]);
     }
 
 
