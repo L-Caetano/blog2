@@ -1,6 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<script>
+
+function swalDelete(user){
+Swal.fire({
+  title: 'Tem certeza?',
+  text: "Não será possivel reverter isso!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Sim, delete!',
+  cancelButtonText: 'Cancelar'
+}).then((result) => {
+  if (result.isConfirmed) {
+      var route = "{{ path('deleteUser', {user: 'user'})}}"
+      route = route.replace('user', user);
+  window.location.replace(route)
+  }
+})
+}
+</script>
     {% for message in app.flashes('sucesso') %}
         <div class="alert alert-success">
             {{ message }}
@@ -10,7 +31,7 @@
       <div class ="row">
      <div class ="col"></div>
     <div class="col-10">
-        <h1>Dashboard de usuarios
+        <h1 onclick="logmerda()">Dashboard de usuarios
         <br><hr>
         <form method="POST">
         <div class ="row">
@@ -43,7 +64,7 @@
         {% for user in users %}
             <li class="list-group-item">
                
-                <b>    {{ user.username }} </b>
+                <strong>    {{ user.username }} </strong>
               
                 <button  style="float: right" class="btn btn-danger" onclick="swalDelete({{user.id}})" > Deletar usuario</button >
                 <a style="float: right;" class="btn btn-primary" href="{{ path('user.edit', {id: user.id}) }}"> Editar usuario</a>
@@ -65,26 +86,5 @@
         <div class="col-sm-1">
         </div>
         </div>
-{% endblock %}
-{% block javascripts %}
-<script>
-
-function swalDelete(user){
-Swal.fire({
-  title: 'Tem certeza?',
-  text: "Não será possivel reverter isso!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Sim, delete!'
-}).then((result) => {
-  if (result.isConfirmed) {
-      var route = "{{ path('deleteUser', {user: 'user'})}}"
-      route = route.replace('user', user);
-  window.location.replace(route)
-  }
-})
-}
-</script>
+        </div>   
 {% endblock %}

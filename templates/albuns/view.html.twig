@@ -22,7 +22,7 @@
        
       <hr><input id="remember" name="remember" type="checkbox" onclick="validate()" /> Selecionar multiplas imagens
     </div>
-
+ {% if album.items %}
  <div class="container-fluid">
      {% dump(album) %}
                      <div class="row">
@@ -54,6 +54,8 @@
 
             {% endfor %}       
              </div>
+              {% endif %}
+           
             </div>
             <hr>
      <div class="row">
