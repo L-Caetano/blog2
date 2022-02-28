@@ -22,15 +22,17 @@
        
       <hr><input id="remember" name="remember" type="checkbox" onclick="validate()" /> Selecionar multiplas imagens
     </div>
+        {% dump(album) %}
  {% if album.items %}
  <div class="container-fluid">
-     {% dump(album) %}
+ 
                      <div class="row">
                      {% set cont = 0 %}
                      {% set apl = (album.items|length / 5)|round %}
                       {% if album.items|length < 5 %}
                   {% set apl = (album.items|length / 5)|round(0,'floor') %}
                     {% endif %}
+            
             {% for postagem in album.items %}
              
              {% if cont == 0 %}
@@ -40,7 +42,7 @@
 
                                 <img src="{{ '/uploads/' ~ postagem.imagem }}" id="{{postagem.id}}" >
                                 <div class="centered"  id="sel{{postagem.id}}" style="visibility: hidden;"><h3>Selecionado</h3></div> 
-                                </div>
+            </div>
           {% if cont == apl %}
               </div> 
             {% endif %}

@@ -19,6 +19,17 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    //funcao para pegar as postagens de dentro da categoria
+    public function getPostagens($id){
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            'SELECT p
+            FROM App\Entity\Postagem p
+            JOIN p.categories c
+            WHERE c.id = :id'
+        )->setParameter('id', $id);
+        return $query->getResult();
+    }
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */
