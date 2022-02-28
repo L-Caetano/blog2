@@ -40,6 +40,22 @@ class CategoryController extends AbstractController{
             'imagem' => $postagem
         ]);
     }
+     /**
+     * @Route("/meusAlbuns", name="MeusAlbuns")
+     */
+    public function meusAlbuns(PaginatorInterface $paginator,Request $request){
+      $user = $this->getUser();
+      $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(array('usuario' => $user));
+      $postagem = $this->getDoctrine()->getRepository(Postagem::class)->findAll();
+      $categories = $paginator->paginate(
+       $cat, $request->query->getInt('page',1),6);
+       //dd($categories->items);
+       //dump($postagem);
+      return $this->render('albuns/meusAlbuns.html.twig', [
+          'album' => $categories,
+          'imagem' => $postagem
+      ]);
+  }
     /**
      * @Route("/album/salvaAlbum", name="api_post_album", methods={"POST"}))
      */

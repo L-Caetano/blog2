@@ -1,0 +1,99 @@
+{% extends "base.html.twig" %}
+
+{% block body %}<script>
+function save(){
+    console.log("cyuu")
+  $.post("{{ path("album.create")}}",
+  {
+    name: "Donald Duck"
+  },
+  function(data, status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+
+}
+
+</script>
+<div class="row"  style="padding-top: 10px">
+<div class="col"></div>
+ <div class="col-11 shadow p-3 mb-5 bg-white rounded">
+    <div class="text-center my-5">
+        <h1  class="display-3">Meus álbuns</h1>
+    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Novo álbum
+</button>
+
+  <div class="row">
+<!-- Button trigger modal -->
+
+
+      <div class="row" style="padding-left:50px;">
+    
+     {% for albuns in album %}
+    
+      <div class="col" id="fixed" style="text-align: center;"> 
+      <hr> <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
+      <h2><b>{{albuns.name}}</b></h2>   
+                    {% for imagens in imagem|slice(1, 1) %}
+                        <img class="card-2" src="{{ '/uploads/' ~ imagens.imagem }}" width ="450px" height="400px">
+                    {% endfor %}
+                    <br>      
+                        </a>
+               </div>
+                 
+            {% endfor %}
+
+     </div>
+
+     </div>
+     <div class="containner">
+     <div class="row">
+     </div>   
+          
+ <div class="row">
+    <div class="col-sm-5">
+    </div>
+    <div class="col-sm-7">
+    <div class="navigation" >
+    <br><br>
+            {{ knp_pagination_render(album) }}
+        </div>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        </div>
+        </div></div>
+        <div class="col"></div>
+
+        </div><!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Novo álbum</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">Nome</span>
+  </div>
+  <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary" onclick="save()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+{% endblock %}
