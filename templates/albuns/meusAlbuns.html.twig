@@ -11,9 +11,11 @@
     <div class="text-center my-5">
         <h1  class="display-3">Meus álbuns</h1>
     </div>
+     {% if app.user.id == album[0].usuario.id or is_granted('ROLE_ADMIN') %}
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
  Criar Novo álbum
 </button>
+{% endif %}
 
   <div class="row">
 <!-- Button trigger modal -->
@@ -74,8 +76,8 @@
 </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary" onclick="save()">Salvar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-success" onclick="save()">Criar</button>
       </div>
     </div>
   </div>
