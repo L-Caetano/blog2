@@ -116,7 +116,7 @@ class CategoryController extends AbstractController{
         $request->request->get('album');
         /** @var User $user */
         $user = $this->getUser();
-  
+        //dd($request->request->get('album'));
         //Acha a category  pelo id
         /** @var Category $category */
         $category = $this->getDoctrine()->getRepository(Category::class)->find($request->request->get('album'));

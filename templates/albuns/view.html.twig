@@ -99,7 +99,7 @@ validate();
                 options[o.id] = o.name;
             });
       console.log(data)
- const { value: fruit } =  Swal.fire({
+ const { value: album } =  Swal.fire({
   title: 'Selecione o album a salvar as imagens',
   input: 'select',
   inputOptions: options,
@@ -107,13 +107,40 @@ validate();
   showCancelButton: true,
   inputValidator: (value) => {
     return new Promise((resolve) => {
-     console.log("jesus",value)
+      console.log(value)
+    $.ajax({
+  type: "POST",
+  url: '{{ path("album.api_post_album")}}',
+  data: {
+    images: ids,
+    album: value
+  },
+  dataType: 'json',
+     success: function(data, status) {       
+                  resolve()
+                   Swal.fire({
+                icon: 'success',
+                title: 'Imagens adicionadas!',
+                 text: 'As imagens selecionadas foram adicionadas no album!'
+                })
+                  
+               },  
+               error : function(xhr, textStatus, errorThrown) {  
+                  resolve()
+               Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                 text: 'Aconteceu um erro com o servidor!'
+                })
+               }
+});
+
     })
   }
 })
 
-if (fruit) {
-  Swal.fire(`You selected: ${fruit}`)
+if (album) {
+  Swal.fire(`You selected: ${album}`)
 }
       }
 $(document).ready(function(){   
