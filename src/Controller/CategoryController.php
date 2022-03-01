@@ -159,9 +159,10 @@ class CategoryController extends AbstractController{
      */
     public function getAlbumsAction(Request $request)
     {
+        $user = $this->getUser();
         $a = $this->getDoctrine()
             ->getRepository(Category::class)
-            ->findAll();
+            ->findBy(array('usuario' => $user));
 
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $jsonData = array();
