@@ -177,7 +177,32 @@ $(document).ready(function(){
   cancelButtonText: 'Cancelar'
 }).then((result) => {
   if (result.isConfirmed) {
-      console.log("cuuuuuuuuuuuuu")
+       $.ajax({
+  type: "PUT",
+  url: '{{ path("album.remove_imagem")}}',
+  data: {
+    id: ids,
+  
+  },
+  dataType: 'json',
+     success: function(data, status) {       
+                  resolve()
+                   Swal.fire({
+                icon: 'success',
+                title: 'Imagens adicionadas!',
+                 text: 'As imagens selecionadas foram deletadas do album!'
+                })
+                  
+               },  
+               error : function(xhr, textStatus, errorThrown) {  
+                  resolve()
+               Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                 text: 'Aconteceu um erro com o servidor!'
+                })
+               }
+});
   }
 })
       });

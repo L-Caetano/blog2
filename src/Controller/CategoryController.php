@@ -217,7 +217,7 @@ class CategoryController extends AbstractController{
     }
     //remove as imagens do album
     /**
-     * @Route("/album/remove_imagem/{id}", name="remove_imagem", methods={"PUT"})
+     * @Route("/album/remove_imagem", name="remove_imagem", methods={"PUT"})
      */
     public function removeImagemAlbumAction(Request $request)
     {
