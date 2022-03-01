@@ -231,7 +231,8 @@ class CategoryController extends AbstractController{
                 if(!$postagem){
                     return new JsonResponse(array('success' => false, 'message' => 'Postagem não encontrada'));
                 }
-                $album = $postagem->getCategories();
+                $album= $em->getRepository(Category::class)->find($request->get('album'));
+                dump($album);
                 if(!$album->removePostagem($postagem)){
                     return new JsonResponse(array('success' => false, 'message' => 'Erro ao remover a imagem'));
                 }
