@@ -14,29 +14,24 @@
     </div>
     <div class="col">
   <div class="row">
-      <div  class="col"></div>
+      <div  class="col-md col-12"></div>
      {% for postagens in postagens %}
-      <div class="col-2"  style="text-align: center;"> 
-      <div class="row">
-      <hr> <a href="{{ path('album.view', { id: postagens.id }) }}" style="color: #000000; text-decoration: none;" >
-      <h2><b>{{postagens.name}}</b></h2>   
+      <div class="col-md-2 col-12"  style="text-align: center;"> 
+        <hr> 
+        <a href="{{ path('album.view', { id: postagens.id }) }}" style="color: #000000; text-decoration: none;" >
+            <h2><b>{{postagens.name}}</b></h2>   
+                            
+            <img class="card-2 w-100 h-100" src="{{ '/uploads/3d9367a31e95e6477d9bca46ba0e7191.png'}}" >
+            <br>      
+         </a>
+        </div>
                     
-                        <img class="card-2" src="{{ '/uploads/3d9367a31e95e6477d9bca46ba0e7191.png'}}" width ="260px" height="250px">
-                   
-                    <br>      
-                        </a></div>
-               </div>
-                 
-            {% endfor %}
-         <div  class="col"></div> 
+    {% endfor %}
+            <div  class="col-md col-12"></div> 
      </div>
      <br><br><br>
      <div class="row">
-    <button style="  margin: 0;
-  position: absolute;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);" type="button" class="btn btn-dark">Ver mais albuns <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+    <button style="" type="button" class="btn btn-dark mt-5 mx-auto ">Ver mais albuns <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"></path>
   <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"></path>
 </svg></button></div> 
