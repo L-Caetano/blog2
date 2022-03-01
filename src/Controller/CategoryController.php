@@ -21,6 +21,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
+use PhpParser\Node\Expr\Cast\Object_;
+
 /**
  * @Route("/album", name="album.")
  */
@@ -31,13 +33,36 @@ class CategoryController extends AbstractController{
      */
     public function index(PaginatorInterface $paginator,Request $request){
         $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(['public'=>true]);
+        $em = $this->getDoctrine()->getManager();
+        foreach($cat as $c){
+            $postagemnsGet= $em->getRepository(Postagem::class)->createQueryBuilder('a')
+            ->select('a.imagem')
+            ->join('a.categories', 'c')
+            ->where('c.id = :id')
+            ->orderBy('a.id' ,'DESC')
+            ->setParameter('id', $c->getId())
+            ->setMaxResults( 1 )
+            ->getQuery()
+            ->getResult();
+            if(!empty($postagemnsGet)){
+                $postagemnsGet= (Object) $postagemnsGet[0];
+                $postagemImg[$c->getId()]= $postagemnsGet->imagem;
+            }else{
+                $postagemImg[$c->getId()]= null;
+            }
+            
+        }
         $postagem = $this->getDoctrine()->getRepository(Postagem::class)->findAll();
         $categories = $paginator->paginate(
          $cat, $request->query->getInt('page',1),6);
+         //dd($categories);
+
+         dump($categories);
          //dd($categories->items);
         return $this->render('albuns/index.html.twig', [
             'album' => $categories,
-            'imagem' => $postagem
+            'imagem' => $postagem,
+            'postagemImg' => $postagemImg,
         ]);
     }
      /**

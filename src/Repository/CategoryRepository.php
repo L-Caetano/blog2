@@ -30,6 +30,16 @@ class CategoryRepository extends ServiceEntityRepository
         )->setParameter('id', $id);
         return $query->getResult();
     }
+    //funcao que retorna uma postagem só 
+    public function getPostagem($id){
+
+        // $query = $em->createQueryBuilder(
+        //     'SELECT p
+        //     FROM App\Entity\Postagem p
+        //     JOIN p.categories c
+        //     WHERE c.id = :id
+        //     ')
+    }
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */

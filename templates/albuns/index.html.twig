@@ -13,17 +13,16 @@
     
      {% for albuns in album %}
     
-      <div class="col" id="fixed" style="text-align: center;"> 
-      <hr> <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
-      <h2><b>{{albuns.name}}</b></h2>   
-                    {% for imagens in imagem|slice(1, 1) %}
-                        <img class="card-2" src="{{ '/uploads/' ~ imagens.imagem }}" width ="450px" height="400px">
-                    {% endfor %}
-                    <br>      
-                        </a>
-               </div>
-                 
-            {% endfor %}
+        <div class="col" id="fixed" style="text-align: center;"> 
+        <img class="card-2 mb-3" src="{{ '/uploads/' ~ postagemImg[albuns.id]  }}" width ="300" height="250">
+            <hr> 
+            <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
+                <h2><b>{{albuns.name}}</b></h2>   
+                <br>      
+            </a>
+        </div>
+                    
+    {% endfor %}
 
      </div>
 
