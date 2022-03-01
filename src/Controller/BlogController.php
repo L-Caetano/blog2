@@ -24,14 +24,32 @@ class BlogController extends AbstractController
         ->setMaxResults( 5 )
         ->getQuery()
         ->getResult();
-
-        $postagem = $this->getDoctrine()->getRepository(Postagem::class)->findAll();
+        $em = $this->getDoctrine()->getManager();
+        foreach($cat as $c){
+            //dd($c);
+            $postagemnsGet= $em->getRepository(Postagem::class)->createQueryBuilder('a')
+            ->select('a.imagem')
+            ->join('a.categories', 'c')
+            ->where('c.id = :id')
+            ->orderBy('a.id' ,'DESC')
+            ->setParameter('id', $c['id'])
+            ->setMaxResults( 1 )
+            ->getQuery()
+            ->getResult();
+            if(!empty($postagemnsGet)){
+                $postagemnsGet= (Object) $postagemnsGet[0];
+                $postagemImg[$c['id']]= $postagemnsGet->imagem;
+            }else{
+                $postagemImg[$c['id']]= null;
+            }
+            
+        }
         $categories = $paginator->paginate(
          $cat, $request->query->getInt('page',1),6);
          //dd($categories->items);
         return $this->render('postagem/homepage.html.twig', [
-            'postagens' => $categories,
-            'imagem' => $postagem
+            'album' => $categories,
+            'imagem' => $postagemImg
         ]);
     }
 }
