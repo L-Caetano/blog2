@@ -56,8 +56,6 @@ class CategoryController extends AbstractController{
         $categories = $paginator->paginate(
          $cat, $request->query->getInt('page',1),6);
          //dd($categories);
-
-         dump($categories);
          //dd($categories->items);
         return $this->render('albuns/index.html.twig', [
             'album' => $categories,
@@ -69,25 +67,45 @@ class CategoryController extends AbstractController{
      * @Route("/meusAlbuns", name="MeusAlbuns")
      */
     public function meusAlbuns(PaginatorInterface $paginator,Request $request){
-      $user = $this->getUser();
-      $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(array('usuario' => $user));
-     // dd($cat);
-      //echo 'testeeeeeeeeeeee';
-      //$image = [];
-       //foreach ($cat as $category){
-     // dd($category->getPostagem());
-       //array_push($image, $this->getDoctrine()->getRepository(Postagem::class)->findOneBy(['categories' => $cat]));
-        // dd($category);
-       //}
-      // dd($image);
-      $categories = $paginator->paginate(
-       $cat, $request->query->getInt('page',1),6);
-       //dd($categories->items);
-       //dd($image);
-      
-      return $this->render('albuns/meusAlbuns.html.twig', [
-          'album' => $categories,
-       ]);
+        $user = $this->getUser();
+        $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(array('usuario' => $user));
+        $em = $this->getDoctrine()->getManager();
+        foreach($cat as $c){
+            $postagemnsGet= $em->getRepository(Postagem::class)->createQueryBuilder('a')
+            ->select('a.imagem')
+            ->join('a.categories', 'c')
+            ->where('c.id = :id')
+            ->orderBy('a.id' ,'DESC')
+            ->setParameter('id', $c->getId())
+            ->setMaxResults( 1 )
+            ->getQuery()
+            ->getResult();
+            if(!empty($postagemnsGet)){
+                $postagemnsGet= (Object) $postagemnsGet[0];
+                $postagemImg[$c->getId()]= $postagemnsGet->imagem;
+            }else{
+                $postagemImg[$c->getId()]= null;
+            }
+            
+        }
+        // dd($cat);
+        //echo 'testeeeeeeeeeeee';
+        //$image = [];
+        //foreach ($cat as $category){
+        // dd($category->getPostagem());
+        //array_push($image, $this->getDoctrine()->getRepository(Postagem::class)->findOneBy(['categories' => $cat]));
+            // dd($category);
+        //}
+        // dd($image);
+        $categories = $paginator->paginate(
+        $cat, $request->query->getInt('page',1),6);
+        //dd($categories->items);
+        //dd($image);
+        
+        return $this->render('albuns/meusAlbuns.html.twig', [
+            'album' => $categories,
+            'imagem' => $postagemImg,
+        ]);
   }
     /**
      * @Route("/album/salvaAlbum", name="api_post_album", methods={"POST"}))

@@ -26,7 +26,7 @@
       <div class="col" id="fixed" style="text-align: center;"> 
       <hr> <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
       <h2><b>{{albuns.name}}</b></h2>   
-                     <img class="card-2" src="{{ '/uploads/3d9367a31e95e6477d9bca46ba0e7191.png ' }}" width ="450px" height="400px">
+                     <img class="card-2" src="{{ '/uploads/' ~ imagem[albuns.id] }}" width ="450px" height="400px">
                     <br>      
                         </a>
                </div>
