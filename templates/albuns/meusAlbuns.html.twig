@@ -1,19 +1,10 @@
 {% extends "base.html.twig" %}
+{% block javascripts %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-{% block body %}<script>
-function save(){
-    console.log("cyuu")
-  $.post("{{ path("album.create")}}",
-  {
-    name: "Donald Duck"
-  },
-  function(data, status){
-    alert("Data: " + data + "\nStatus: " + status);
-  });
-
-}
-
-</script>
+{% endblock %}
+{% block body %}
 <div class="row"  style="padding-top: 10px">
 <div class="col"></div>
  <div class="col-11 shadow p-3 mb-5 bg-white rounded">
@@ -35,9 +26,7 @@ function save(){
       <div class="col" id="fixed" style="text-align: center;"> 
       <hr> <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
       <h2><b>{{albuns.name}}</b></h2>   
-                    {% for imagens in imagem|slice(1, 1) %}
-                        <img class="card-2" src="{{ '/uploads/' ~ imagens.imagem }}" width ="450px" height="400px">
-                    {% endfor %}
+                    
                     <br>      
                         </a>
                </div>
@@ -81,7 +70,7 @@ function save(){
   <div class="input-group-prepend">
     <span class="input-group-text" id="inputGroup-sizing-default">Nome</span>
   </div>
-  <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+  <input type="text" class="form-control" id="myInput" aria-label="Default" aria-describedby="inputGroup-sizing-default">
 </div>
       </div>
       <div class="modal-footer">
@@ -91,9 +80,19 @@ function save(){
     </div>
   </div>
 </div>
-{% endblock %}
-{% block javascripts %}
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script>
+function save(){
+    console.log("cyuu")
+    var str = $("#myInput").val();
+  $.post("{{ path("album.create")}}",
+  {
+    name: str
+  },
+  function(data, status){
+    //alert("Data: " + data + "\nStatus: " + status);
+     window.location.reload()
+  });
+   ;
+}
+</script>
 {% endblock %}

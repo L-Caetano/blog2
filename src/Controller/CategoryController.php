@@ -46,15 +46,23 @@ class CategoryController extends AbstractController{
     public function meusAlbuns(PaginatorInterface $paginator,Request $request){
       $user = $this->getUser();
       $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(array('usuario' => $user));
-      $postagem = $this->getDoctrine()->getRepository(Postagem::class)->findAll();
+     // dd($cat);
+      //echo 'testeeeeeeeeeeee';
+      //$image = [];
+       //foreach ($cat as $category){
+     // dd($category->getPostagem());
+       //array_push($image, $this->getDoctrine()->getRepository(Postagem::class)->findOneBy(['categories' => $cat]));
+        // dd($category);
+       //}
+      // dd($image);
       $categories = $paginator->paginate(
        $cat, $request->query->getInt('page',1),6);
        //dd($categories->items);
-       //dump($postagem);
+       //dd($image);
+      
       return $this->render('albuns/meusAlbuns.html.twig', [
           'album' => $categories,
-          'imagem' => $postagem
-      ]);
+       ]);
   }
     /**
      * @Route("/album/salvaAlbum", name="api_post_album", methods={"POST"}))
@@ -86,19 +94,17 @@ class CategoryController extends AbstractController{
      */
     public function postAlbumCreateAction(Request $request){
         $album = new Category();
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $album->setUsuario($user);
         //verifica se o usuario é admin
-        foreach($user->getRoles() as $role){
-           
-            if(in_array('ROLE_ADMIN',$role)){
-                $album->setPublic(true);
+        $role= $user->getRoles();
+                if($role[0] == 'ROLE_ADMIN'){
+                    $album->setPublic(true);
 
-            }
-            else{
-                $album->setPublic(false);
-            }
-        }
+                }
+                else{
+                    $album->setPublic(false);
+                }
         $album->setName($request->request->get('name'));
         $em = $this->getDoctrine()->getManager();
         $em->persist($album);
@@ -131,12 +137,12 @@ class CategoryController extends AbstractController{
      * @Route("/view/{id}", name="view")
      */
     public function viewAlbumAction(Category $cat, PaginatorInterface $paginator,Request $request){
-      $em=$this->getDoctrine()->getManager();
+      //$em=$this->getDoctrine()->getManager();
         //cria querybuilder para achar por cat
         // $query = $this->getDoctrine()->getRepository(Category::class)->createQueryBuilder('a')
         // ->innerJoin('a.postagem', 'c', 'WITH', 'c.categories = :id')
         // ->setParameter('id', $cat->getId())->getQuery()->getResult();
-        $catRepo= $em->getRepository(Category::class)->getPostagens($cat->getId());
+        //$catRepo= $em->getRepository(Category::class)->getPostagens($cat->getId());
         //dd($catRepo);
         $category = $paginator->paginate(
         $cat->getPostagem(), $request->query->getInt('page',1),16);

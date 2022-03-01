@@ -62,9 +62,20 @@
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item">
     <a class="navbar-link" href="{{ path('album.albuns') }}" style="text-decoration: none;">
-        <p class=" d-inline font-weight-bold" style="color: white;">Albuns</p>
+        <p class=" d-inline font-weight-bold" style="color: white;">Albuns da Artestilo</p>
     </a>&nbsp;&nbsp;
      </li>
+     <li class="nav-item">
+    <a class="navbar-link" href="{{ path('album.MeusAlbuns') }}" style="text-decoration: none;">
+        <p class=" d-inline font-weight-bold" style="color: white;">Meus Albuns</p>
+    </a>&nbsp;&nbsp;
+     </li>
+    <li class="nav-item">
+        <a class="navbar-link" href="{{ path('createCategory') }}" style="text-decoration: none;">
+            <p class=" d-inline font-weight-bold" style="color: white;"> Novo Album</p>
+        </a>
+        &nbsp;&nbsp;
+        </li>
     {% if is_granted('ROLE_ADMIN') %}
       <li class="nav-item">
     <a class="navbar-link" href="{{ path('blog_postagem.create') }}" style="text-decoration: none;">
@@ -72,13 +83,7 @@
     </a>
     &nbsp;&nbsp;
       </li>
-      <li class="nav-item">
-        <a class="navbar-link" href="{{ path('createCategory') }}" style="text-decoration: none;">
-            <p class=" d-inline font-weight-bold" style="color: white;"> Novo Album</p>
-        </a>
-        &nbsp;&nbsp;
-        </li>
-        
+  
         <li class="nav-item">
         <a class="navbar-link" href="{{ path('dashboard') }}" style="text-decoration: none;">
             <p class=" d-inline font-weight-bold" style="color: white;"> Controle de usuário</p>
@@ -86,12 +91,12 @@
          </ul>
     {% endif %}
     {% if app.user %}
- 
+
         <a href="{{ path('app_logout') }}" class="btn btn-dark ml-auto" style="color: white;">Sair</a>
        
       {% else %}
     
-        <a href="{{ path('app_login') }}" class="btn btn-dark ml-auto" style="color: white;">Entrar</a>
+        <a href="{{ path('app_login') }}" class="btn btn-dark ml-auto" style="color: white; float: right;">Entrar</a>
       
     {% endif %}
    
