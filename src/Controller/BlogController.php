@@ -17,7 +17,14 @@ class BlogController extends AbstractController
      */
     public function homepage(PaginatorInterface $paginator,Request $request)
     {
-        $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(['public'=>true]);
+        $cat = $this->getDoctrine()->getRepository(Category::class)->createQueryBuilder('a')
+        ->select('a.name,a.id ')
+        ->where('a.public = 1')
+        ->orderBy('a.creation_date' ,'DESC')
+        ->setMaxResults( 5 )
+        ->getQuery()
+        ->getResult();
+
         $postagem = $this->getDoctrine()->getRepository(Postagem::class)->findAll();
         $categories = $paginator->paginate(
          $cat, $request->query->getInt('page',1),6);
