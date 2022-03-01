@@ -162,16 +162,22 @@ class PostagemController extends AbstractController
     /**
      * @Route("/deleteImagens/{id}", name="delete_imagens", methods={"DELETE"})
      */
-    public function deleteImagens(Postagem $postagem){
+    public function deleteImagens(Request $request){
         $em = $this->getDoctrine()->getManager();
-        if(!$postagem){
-            throw $this->createNotFoundException('Imagem não encontrada');
+        //para cada id acha uma postagem
+        $ids=$request->request->get('id');
+        foreach($ids as $id){
+            $postagem = $this->getDoctrine()->getRepository(Postagem::class)->find($id);
+            if(!$postagem){
+                throw $this->createNotFoundException('Imagem não encontrada');
+            }
+            //tira os albuns da postagem
+            foreach($postagem->getCategories() as $album){
+                $postagem->removeCategory($album);
+            }
+            $em->remove($postagem);
         }
-        //tira os albuns da postagem
-        foreach($postagem->getCategories() as $album){
-            $postagem->removeCategory($album);
-        }
-        $em->remove($postagem);
+      
         $em->flush();
         $this->addFlash('sucesso', 'Postagem deletada');
         return $this->redirect($this->generateUrl('blog_postagem.index'));

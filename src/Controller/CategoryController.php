@@ -200,7 +200,7 @@ class CategoryController extends AbstractController{
 
     //endpoint para remover as categorias e tirar as postagens
     /**
-     * @Route("/album/delete/{id}", name="delete", methods={"DELETE"})
+     * @Route("/album/delete", name="delete", methods={"DELETE"})
      */
     public function deleteRemoveAlbumAction(Request $request){
         $em = $this->getDoctrine()->getManager();
@@ -222,16 +222,22 @@ class CategoryController extends AbstractController{
     public function removeImagemAlbumAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $postagem = $em->getRepository(Postagem::class)->find($request->get('id'));
-        if(!$postagem){
-            return new JsonResponse(array('success' => false, 'message' => 'Postagem não encontrada'));
+        $ids = $request->request->get('id');
+        //para cada id procura uma postagem
+        foreach($ids as $id){
+            $postagem = $em->getRepository(Postagem::class)->find($id);
+            //se a postagem existir remove ela
+            if($postagem){
+                if(!$postagem){
+                    return new JsonResponse(array('success' => false, 'message' => 'Postagem não encontrada'));
+                }
+                $album = $postagem->getCategories();
+                if(!$album->removePostagem($postagem)){
+                    return new JsonResponse(array('success' => false, 'message' => 'Erro ao remover a imagem'));
+                }
+            }
         }
-        $album = $postagem->getCategories();
-        if(!$album->removePostagem($postagem)){
-            return new JsonResponse(array('success' => false, 'message' => 'Erro ao remover a postagem'));
-        }
-       
-        return new JsonResponse(array('success' => true));
+        return new JsonResponse(array('success' => true, 'message' => 'Imagens removidas com sucesso'));
     }
 
 
