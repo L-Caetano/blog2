@@ -254,10 +254,12 @@ class CategoryController extends AbstractController{
                 }
                 $album= $em->getRepository(Category::class)->find($request->get('album'));
                 dump($album);
+                $postagem->removeCategory($album);
                 if(!$album->removePostagem($postagem)){
                     return new JsonResponse(array('success' => false, 'message' => 'Erro ao remover a imagem'));
                 }
             }
+            $em->flush();
         }
         return new JsonResponse(array('success' => true, 'message' => 'Imagens removidas com sucesso'));
     }
