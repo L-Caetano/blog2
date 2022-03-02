@@ -18,8 +18,8 @@
 <div class="col"></div>
  <div class="col-lg-11 shadow p-3 mb-5 bg-white rounded">
     <div class="text-center my-5">
-      <h1 class="display-3">{{ albumInfo.name }} </h1>
-       {{ dump(albumInfo) }}
+      <h1 class="display-3">Imagens do sistema </h1>
+   
       <hr>
     </div>
        
@@ -44,9 +44,9 @@
                                 <div class="centered"  id="sel{{postagem.id}}" style="visibility: hidden;"><h3>Selecionado</h3></div> 
             </div>
           {% if cont == apl %}
-              </div> oi2
+              </div> 
             {% endif %}
-          
+           
             {% if cont == apl %}
            {% set cont = 0 %}
            
@@ -55,9 +55,9 @@
             {% endif %}
 
             {% endfor %}       
-             </div>oi
+             </div>
               {% endif %}
-           </div>
+           
             </div>
             <hr>
      <div class="row">
@@ -78,7 +78,7 @@
           <nav class="navbar fixed-bottom navbar-light bg-light" id="navbarFooterUser" style="visibility: hidden;">
   <div class="row">
     <button id = "carregarSwalAdd" type="button" class="btn btn-primary">Adicionar ao meu album</button>
-     {% if app.user.id == albumInfo.usuario.id or is_granted('ROLE_ADMIN') %}
+     {% if is_granted('ROLE_ADMIN') %}
                 <button id = "carregarSwalRemove" style="float: right" type="button" class="btn btn-danger">Remover deste album</button>
             {% endif %}
   </div>
@@ -176,14 +176,13 @@ $(document).ready(function(){
   confirmButtonText: 'Sim, delete!',
   cancelButtonText: 'Cancelar'
 }).then((result) => {
-  console.log({{albumInfo.id}})
+ 
   if (result.isConfirmed) {
        $.ajax({
   type: "PUT",
   url: '{{ path("album.remove_imagem")}}',
   data: {
-    id: ids,
-    album: {{albumInfo.id}}
+    id: ids
   },
   dataType: 'json',
      success: function(data, status) {       

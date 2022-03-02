@@ -198,22 +198,23 @@ class CategoryController extends AbstractController{
         ]);
     }
     /**
-     * @Route("/view/all", name="viewAll")
+     * @Route("/viewAll", name="viewAll")
      */
-    public function viewAllAlbumAction(Category $cat, PaginatorInterface $paginator,Request $request){
-        //$em=$this->getDoctrine()->getManager();
-          //cria querybuilder para achar por cat
+    public function viewAllAlbumAction(PaginatorInterface $paginator,Request $request){
+        $em=$this->getDoctrine()->getManager();
+        $cat =  $em->getRepository(Postagem::class)->findAll();
+        //cria querybuilder para achar por cat
           // $query = $this->getDoctrine()->getRepository(Category::class)->createQueryBuilder('a')
           // ->innerJoin('a.postagem', 'c', 'WITH', 'c.categories = :id')
           // ->setParameter('id', $cat->getId())->getQuery()->getResult();
           //$catRepo= $em->getRepository(Category::class)->getPostagens($cat->getId());
           //dd($catRepo);
+            //dd($cat);
           $category = $paginator->paginate(
-          $cat->getPostagem(), $request->query->getInt('page',1),16);
+          $cat, $request->query->getInt('page',1),16);
           // $category->name = $cat->name;
-          // dd($category,$cat,$em);
-          return $this->render('albuns/view.html.twig', [
-          'albumInfo' => $cat,
+      
+          return $this->render('albuns/viewAll.html.twig', [
           'album' => $category,
           ]);
       }
