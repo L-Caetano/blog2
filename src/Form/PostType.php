@@ -21,8 +21,10 @@ class PostType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Imagem',
-                    'multiple' => true
-                ]
+                    
+                ],
+                'multiple' => true,
+                'mapped' => false,
             ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
