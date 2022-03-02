@@ -35,54 +35,53 @@ class PostagemController extends AbstractController
      * @Route("/create", name="create")
      */
     public function create(Request $request,OtimizadorImagemService $ois){
+       
         $postagem = new Postagem();
-
         $form = $this->createForm(PostType::class, $postagem);
         $form->handleRequest($request);
         $valid_ext = array('png','jpeg','jpg');
         if($form->isSubmitted()){
             $em = $this->getDoctrine()->getManager();
               // file extension
-          
-            /** @var UploadedFile $file */
-            $file = $request->files->get('post')['imagem'];
-            //pega toda a data do request
-            $data = $request->request->get('post');
-            if($file){
-                $titulo = $file->getClientOriginalName();
-                $file_extension = $file->guessClientExtension();
-                $file_extension = strtolower($file_extension);
-                if(!in_array($file_extension, $valid_ext)){
-                    $this->addFlash('Erro', 'Erro na postagem');
-                    return new JsonResponse('Extensão inválida');
+            $files = $request->files->get('post')['imagem'];
+            foreach($files as $file){
+                $postagem = new Postagem();
+                if($file){
+                    $titulo = $file->getClientOriginalName();
+                    $file_extension = $file->guessClientExtension();
+                    $file_extension = strtolower($file_extension);
+                    if(!in_array($file_extension, $valid_ext)){
+                        $this->addFlash('Erro', 'Erro na postagem');
+                        return new JsonResponse('Extensão inválida');
+                    }
+                    $filename = md5(uniqid()).'.'.$file_extension;
+                    $file->move(
+                        $this->getParameter('uploads_dir'),
+                            $filename
+                    );
+      
+                    $postagem->setImagem($filename);
+                    $postagem->setUsuario($this->getUser());
+                    $postagem->setTitulo($titulo);
+                    //for each para cada categoria que vier
+                    foreach($request->request->get('post')['categories'] as $cat){
+                        /** @var Category $categoria */
+                        $categoria= $this->getDoctrine()->getRepository(Category::class)->find($cat);
+                        $categoria->addPostagem($postagem);
+                        //dd($categoria);
+                        $postagem->addCategory($categoria);
+                        
+                        $em->persist($categoria);
+                    }
+                    $session = new Session();
+                    $postagem->setAutor($session->get('_security.last_username'));
+                    $ois->resize($this->getParameter('uploads_dir').$filename);
                 }
-
-                $filename = $titulo;
-                $file->move(
-                    $this->getParameter('uploads_dir'),
-                        $filename
-                );
-  
-                $postagem->setImagem($filename);
-                $postagem->setUsuario($this->getUser());
-                $postagem->setTitulo($titulo);
-                //for each para cada categoria que vier
-                foreach($request->request->get('post')['categories'] as $cat){
-                    /** @var Category $categoria */
-                    $categoria= $this->getDoctrine()->getRepository(Category::class)->find($cat);
-                    $categoria->addPostagem($postagem);
-                    //dd($categoria);
-                    $postagem->addCategory($categoria);
-                    
-                    $em->persist($categoria);
-                }
-                $session = new Session();
-                $postagem->setAutor($session->get('_security.last_username'));
-                
+                $em->persist($postagem);
+                $em->flush();
             }
-            $em->persist($postagem);
-            $em->flush();
-            $ois->resize($this->getParameter('uploads_dir').$filename);
+            
+           
             $this->addFlash('sucesso', 'Postagem Criada');
             return $this->redirect($this->generateUrl('blog_postagem.viewAll'));
         }
