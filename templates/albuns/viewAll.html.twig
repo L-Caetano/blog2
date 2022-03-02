@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
  
 {% block body %} 
+{% for message in app.flashes('sucesso') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
 <style>
   .container {
   position: relative;
