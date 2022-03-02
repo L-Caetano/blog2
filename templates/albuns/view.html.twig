@@ -19,7 +19,7 @@
  <div class="col-lg-11 shadow p-3 mb-5 bg-white rounded">
     <div class="text-center my-5">
       <h1 class="display-3">{{ albumInfo.name }} </h1>
-       
+       {{ dump(albumInfo) }}
       <hr>
     </div>
        
@@ -176,13 +176,14 @@ $(document).ready(function(){
   confirmButtonText: 'Sim, delete!',
   cancelButtonText: 'Cancelar'
 }).then((result) => {
+  console.log({{albumInfo.id}})
   if (result.isConfirmed) {
        $.ajax({
   type: "PUT",
   url: '{{ path("album.remove_imagem")}}',
   data: {
     id: ids,
-  
+    album: {{albumInfo.id}}
   },
   dataType: 'json',
      success: function(data, status) {       
