@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Postagem;
 use App\Form\PostType;
+use App\Service\OtimizadorImagemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,7 +33,7 @@ class PostagemController extends AbstractController
     /**
      * @Route("/create", name="create")
      */
-    public function create(Request $request){
+    public function create(Request $request,OtimizadorImagemService $ois){
         $postagem = new Postagem();
 
         $form = $this->createForm(PostType::class, $postagem);
@@ -54,11 +55,13 @@ class PostagemController extends AbstractController
                     $this->addFlash('Erro', 'Erro na postagem');
                     return new JsonResponse('Extensão inválida');
                 }
-                $filename = md5(uniqid()).'.'.$file->guessClientExtension();
+
+                $filename = $titulo;
                 $file->move(
                     $this->getParameter('uploads_dir'),
                         $filename
                 );
+  
                 $postagem->setImagem($filename);
                 $postagem->setUsuario($this->getUser());
                 $postagem->setTitulo($titulo);
@@ -78,7 +81,7 @@ class PostagemController extends AbstractController
             }
             $em->persist($postagem);
             $em->flush();
-
+            $ois->resize($this->getParameter('uploads_dir').$filename);
             $this->addFlash('sucesso', 'Postagem Criada');
             return $this->redirect($this->generateUrl('blog_postagem.list'));
         }
