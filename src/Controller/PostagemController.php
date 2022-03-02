@@ -162,7 +162,7 @@ class PostagemController extends AbstractController
 
     }
    /**
-     * @Route("/viewAll", name="viewAll")
+     * @Route("/todas", name="viewAll")
      */
     public function viewAllAlbumAction(PaginatorInterface $paginator,Request $request){
         $em=$this->getDoctrine()->getManager();
@@ -201,11 +201,16 @@ class PostagemController extends AbstractController
             foreach($postagem->getCategories() as $album){
                 $postagem->removeCategory($album);
             }
+            if (!unlink($this->getParameter('uploads_dir').$postagem->getImagem())) { 
+                return new JsonResponse(['message' => 'Erro ao deletar imagem']);
+            } 
             $em->remove($postagem);
+        
+               
         }
       
         $em->flush();
         $this->addFlash('sucesso', 'Postagem deletada');
-        return $this->redirect($this->generateUrl('blog_postagem.index'));
+        return new JsonResponse(['success' => true, 'message' => 'Imagens removidas com sucesso']);
     }
 }

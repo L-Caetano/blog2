@@ -64,7 +64,7 @@ class CategoryController extends AbstractController{
         ]);
     }
      /**
-     * @Route("/meusAlbuns", name="MeusAlbuns")
+     * @Route("/meus_albuns", name="MeusAlbuns")
      */
     public function meusAlbuns(PaginatorInterface $paginator,Request $request){
         $user = $this->getUser();
