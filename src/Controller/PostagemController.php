@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/postagem", name="blog_postagem.")
@@ -160,10 +161,32 @@ class PostagemController extends AbstractController
 
 
     }
-
+   /**
+     * @Route("/viewAll", name="viewAll")
+     */
+    public function viewAllAlbumAction(PaginatorInterface $paginator,Request $request){
+        $em=$this->getDoctrine()->getManager();
+        $cat =  $em->getRepository(Postagem::class)->findAll();
+        //cria querybuilder para achar por cat
+          // $query = $this->getDoctrine()->getRepository(Category::class)->createQueryBuilder('a')
+          // ->innerJoin('a.postagem', 'c', 'WITH', 'c.categories = :id')
+          // ->setParameter('id', $cat->getId())->getQuery()->getResult();
+          //$catRepo= $em->getRepository(Category::class)->getPostagens($cat->getId());
+          //dd($catRepo);
+            //dd($cat);
+          
+            
+          $category = $paginator->paginate(
+          $cat, $request->query->getInt('page',1),16);
+          // $category->name = $cat->name;
+      
+          return $this->render('albuns/viewAll.html.twig', [
+          'album' => $category
+          ]);
+      }
     //Deletar imagens 
     /**
-     * @Route("/deleteImagens/{id}", name="delete_imagens", methods={"DELETE"})
+     * @Route("/deleteImagens", name="delete_imagens", methods={"DELETE"})
      */
     public function deleteImagens(Request $request){
         $em = $this->getDoctrine()->getManager();

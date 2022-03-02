@@ -32,7 +32,7 @@ class CategoryController extends AbstractController{
      * @Route("/todos", name="albuns")
      */
     public function index(PaginatorInterface $paginator,Request $request){
-        $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(['public'=>true]);
+        $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(['public'=>true],array('creation_date' => 'DESC '));
         $em = $this->getDoctrine()->getManager();
         foreach($cat as $c){
             $postagemnsGet= $em->getRepository(Postagem::class)->createQueryBuilder('a')
@@ -68,7 +68,7 @@ class CategoryController extends AbstractController{
      */
     public function meusAlbuns(PaginatorInterface $paginator,Request $request){
         $user = $this->getUser();
-        $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(array('usuario' => $user));
+        $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(array('usuario' => $user),array('creation_date' => 'DESC '));
         $em = $this->getDoctrine()->getManager();
         foreach($cat as $c){
             $postagemnsGet= $em->getRepository(Postagem::class)->createQueryBuilder('a')
@@ -197,26 +197,6 @@ class CategoryController extends AbstractController{
         'album' => $category,
         ]);
     }
-    /**
-     * @Route("/view/all", name="viewAll")
-     */
-    public function viewAllAlbumAction(Category $cat, PaginatorInterface $paginator,Request $request){
-        //$em=$this->getDoctrine()->getManager();
-          //cria querybuilder para achar por cat
-          // $query = $this->getDoctrine()->getRepository(Category::class)->createQueryBuilder('a')
-          // ->innerJoin('a.postagem', 'c', 'WITH', 'c.categories = :id')
-          // ->setParameter('id', $cat->getId())->getQuery()->getResult();
-          //$catRepo= $em->getRepository(Category::class)->getPostagens($cat->getId());
-          //dd($catRepo);
-          $category = $paginator->paginate(
-          $cat->getPostagem(), $request->query->getInt('page',1),16);
-          // $category->name = $cat->name;
-          // dd($category,$cat,$em);
-          return $this->render('albuns/view.html.twig', [
-          'albumInfo' => $cat,
-          'album' => $category,
-          ]);
-      }
 
     //endpoint para remover as categorias e tirar as postagens
     /**

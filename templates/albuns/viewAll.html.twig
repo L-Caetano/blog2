@@ -18,10 +18,11 @@
 <div class="col"></div>
  <div class="col-lg-11 shadow p-3 mb-5 bg-white rounded">
     <div class="text-center my-5">
-      <h1 class="display-3">{{ albumInfo.name }} </h1>
+      <h1 class="display-3">Imagens do sistema </h1>
+   
       <hr>
     </div>
-       
+ 
  {% if album.items %}
  <div class="container-fluid">
  
@@ -45,7 +46,7 @@
           {% if cont == apl %}
               </div> 
             {% endif %}
-          
+           
             {% if cont == apl %}
            {% set cont = 0 %}
            
@@ -56,7 +57,7 @@
             {% endfor %}       
              </div>
               {% endif %}
-           </div>
+            </div>
             </div>
             <hr>
      <div class="row">
@@ -77,11 +78,12 @@
           <nav class="navbar fixed-bottom navbar-light bg-light" id="navbarFooterUser" style="visibility: hidden;">
   <div class="row">
     <button id = "carregarSwalAdd" type="button" class="btn btn-primary">Adicionar ao meu album</button>
-     {% if app.user.id == albumInfo.usuario.id or is_granted('ROLE_ADMIN') %}
-                <button id = "carregarSwalRemove" style="float: right" type="button" class="btn btn-danger">Remover deste album</button>
+     {% if is_granted('ROLE_ADMIN') %}
+                <button id = "carregarSwalRemove" type="button" class="btn btn-danger">Remover imagem do sistema!!!</button>
             {% endif %}
   </div>
 </nav>
+
  {% endif %}
 {% block javascripts %}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -122,6 +124,7 @@ validate();
                 title: 'Imagens adicionadas!',
                  text: 'As imagens selecionadas foram adicionadas no album!'
                 })
+                  
                },  
                error : function(xhr, textStatus, errorThrown) {  
                   resolve()
@@ -174,28 +177,26 @@ $(document).ready(function(){
   confirmButtonText: 'Sim, delete!',
   cancelButtonText: 'Cancelar'
 }).then((result) => {
-  console.log({{albumInfo.id}})
+ 
   if (result.isConfirmed) {
        $.ajax({
-  type: "PUT",
-  url: '{{ path("album.remove_imagem")}}',
+  type: "DELETE",
+  url: '{{ path("blog_postagem.delete_imagens")}}',
   data: {
-    id: ids,
-    album: {{albumInfo.id}}
+    id: ids
   },
   dataType: 'json',
-     success: function(data, status) {         
+     success: function(data, status) {       
+                  resolve()
                    Swal.fire({
                 icon: 'success',
-                title: 'Imagens deletadas!',
+                title: 'Imagens adicionadas!',
                  text: 'As imagens selecionadas foram deletadas do album!'
-                }).then((result) =>{
-                   window.location.reload()
                 })
                   
                },  
                error : function(xhr, textStatus, errorThrown) {  
-                 
+                  resolve()
                Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

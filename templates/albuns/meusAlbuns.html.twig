@@ -26,8 +26,11 @@
      {% for albuns in album %}
     
       <div class="col" id="fixed" style="text-align: center;"> 
-      <hr> <a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" >
-      <h2><b>{{albuns.name}}</b></h2>   
+      <hr> 
+      <h2><button onclick="deleteButton({{albuns.id}})" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+</svg></button>&nbsp;&nbsp;<a href="{{ path('album.view', { id: albuns.id }) }}" style="color: #000000; text-decoration: none;" ><b>{{albuns.name}}</b>  </h2>  
                      <img class="card-2" src="{{ '/uploads/' ~ imagem[albuns.id] }}" width ="450px" height="400px">
                     <br>      
                         </a>
@@ -83,8 +86,47 @@
   </div>
 </div>
 <script>
+function deleteButton(id){
+  console.log(id)
+    Swal.fire({
+  title: 'Tem certeza?',
+  text: "Não será possivel reverter isso!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Sim, delete!',
+  cancelButtonText: 'Cancelar'
+}).then((result) => {
+     $.ajax({
+  type: "DELETE",
+  url: '{{ path("album.delete")}}',
+  data: {
+    id: id,
+  },
+  dataType: 'json',
+     success: function(data, status) {         
+                   Swal.fire({
+                icon: 'success',
+                title: 'Imagens deletadas!',
+                 text: 'As imagens selecionadas foram deletadas do album!'
+                }).then((result) =>{
+                   window.location.reload()
+                })
+                  
+               },  
+               error : function(xhr, textStatus, errorThrown) {  
+                 
+               Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                 text: 'Aconteceu um erro com o servidor!'
+                })
+               }
+});})
+}
 function save(){
-    console.log("cyuu")
+
     var str = $("#myInput").val();
   $.post("{{ path("album.create")}}",
   {
