@@ -19,7 +19,6 @@
  <div class="col-lg-11 shadow p-3 mb-5 bg-white rounded">
     <div class="text-center my-5">
       <h1 class="display-3">{{ albumInfo.name }} </h1>
-       {{ dump(albumInfo) }}
       <hr>
     </div>
        
@@ -44,7 +43,7 @@
                                 <div class="centered"  id="sel{{postagem.id}}" style="visibility: hidden;"><h3>Selecionado</h3></div> 
             </div>
           {% if cont == apl %}
-              </div> oi2
+              </div> 
             {% endif %}
           
             {% if cont == apl %}
@@ -55,7 +54,7 @@
             {% endif %}
 
             {% endfor %}       
-             </div>oi
+             </div>
               {% endif %}
            </div>
             </div>
@@ -123,7 +122,6 @@ validate();
                 title: 'Imagens adicionadas!',
                  text: 'As imagens selecionadas foram adicionadas no album!'
                 })
-                  
                },  
                error : function(xhr, textStatus, errorThrown) {  
                   resolve()
@@ -186,17 +184,18 @@ $(document).ready(function(){
     album: {{albumInfo.id}}
   },
   dataType: 'json',
-     success: function(data, status) {       
-                  resolve()
+     success: function(data, status) {         
                    Swal.fire({
                 icon: 'success',
-                title: 'Imagens adicionadas!',
+                title: 'Imagens deletadas!',
                  text: 'As imagens selecionadas foram deletadas do album!'
+                }).then((result) =>{
+                   window.location.reload()
                 })
                   
                },  
                error : function(xhr, textStatus, errorThrown) {  
-                  resolve()
+                 
                Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

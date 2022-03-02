@@ -22,7 +22,7 @@
    
       <hr>
     </div>
-       
+ 
  {% if album.items %}
  <div class="container-fluid">
  
@@ -57,7 +57,7 @@
             {% endfor %}       
              </div>
               {% endif %}
-           
+            </div>
             </div>
             <hr>
      <div class="row">
@@ -79,10 +79,11 @@
   <div class="row">
     <button id = "carregarSwalAdd" type="button" class="btn btn-primary">Adicionar ao meu album</button>
      {% if is_granted('ROLE_ADMIN') %}
-                <button id = "carregarSwalRemove" style="float: right" type="button" class="btn btn-danger">Remover deste album</button>
+                <button id = "carregarSwalRemove" type="button" class="btn btn-danger">Remover imagem do sistema!!!</button>
             {% endif %}
   </div>
 </nav>
+
  {% endif %}
 {% block javascripts %}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -179,8 +180,8 @@ $(document).ready(function(){
  
   if (result.isConfirmed) {
        $.ajax({
-  type: "PUT",
-  url: '{{ path("album.remove_imagem")}}',
+  type: "DELETE",
+  url: '{{ path("blog_postagem.delete_imagens")}}',
   data: {
     id: ids
   },
